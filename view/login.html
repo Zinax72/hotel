@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../assets/styles/auth.css" />
+</head>
+<body>
+    <div class="login-card">
+        <div class="brand">
+        <h1>Jabubu</h1>
+        <p>Hotel &amp; Resorts</p>
+    </div>
+    <div class="divider">
+        <span></span><em>Login Page</em><span></span>
+    </div>
+    
+    <p id="hint"></p>
+    <form id="loginForm" method="POST">   
+     
+    <div class="formField">
+        <label for="email">Email Address</label><br>
+        <input type="email" name="email" id="email" placeholder="Email" required><br>
+    </div>
+
+    <div class="formField">
+        <label for="password">Password</label><br>
+        <input type="password" name="password" id="password" placeholder="Password" required><br>
+    </div>
+       
+    <input id="loginBtn" type="submit" value="Login">
+        <div class="footer-links">
+        <a href="#">Forgot password?</a>
+        <span>|</span>
+        <a href="register.html">Create account?</a>
+        </div>
+    </form>
+    </div>
+
+    <script src="../assets/scripts/jq.js"></script>
+    <script src="../assets/scripts/auth.js"></script> 
+</body>
+</html>

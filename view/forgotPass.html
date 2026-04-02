@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" type="text/css" href="../assets/styles/auth.css" />
+</head>
+<body>
+    <div class="login-card">
+        <div class="brand">
+        <h1>Jabubu</h1>
+        <p>Hotel &amp; Resorts</p>
+    </div>
+    <div class="divider">
+        <span></span><em>Forgot Password</em><span></span>
+    </div>
+    
+    <p id="hint"></p>
+    <form id="forgotPass" method="POST">   
+
+    <div class="formField">
+        <label for="password">Old Password</label><br>
+        <input type="password" name="oldPassword" id="oldPassword" placeholder="Old Password" required><br>
+    </div>
+
+    <div class="formField">
+        <label for="password">New Password</label><br>
+        <input type="password" name="newPassword" id="newPassword" placeholder="New Password" required><br>
+    </div>
+
+    <div class="formField">
+        <label for="password">Confirm New Password</label><br>
+        <input type="password" name="confirmNewPassword" id="confirmNewPassword" placeholder="Confirm New Password" required><br>
+    </div>
+       
+    <input id="forgotBtn" type="submit" value="Confirm">
+    </form>
+    </div>
+
+    <script src="../assets/scripts/jq.js"></script>
+    <script src="../assets/scripts/auth.js"></script> 
+</body>
+</html>

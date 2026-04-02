@@ -1,0 +1,314 @@
+/* ── BODY ── */
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../img/auth.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+/* ── LOGIN CARD ── */
+.login-card {
+    background-color: #b89a6a;
+    border: 1px solid #231c15;
+    padding: 48px 44px 40px;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    animation: fadeUp 0.6s cubic-bezier(.22,.68,0,1.2) both;
+}
+
+
+/* ── REGISTER CARD ── */
+.reg {
+    background-color: #b89a6a;
+    border: 1px solid #231c15;
+    padding: 48px 44px 40px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    animation: fadeUp 0.6s cubic-bezier(.22,.68,0,1.2) both;
+    margin: 40px auto;
+}
+
+
+/* ── FADE UP ANIMATION ── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ── LOGIN BRAND ── */
+.brand {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.brand h1 {
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: normal;
+    color: #000000;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 6px 0;
+}
+
+.brand p {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #000000;
+    margin: 0;
+}
+
+
+/* ── REGISTER BRAND ── */
+.br {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.br h1 {
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: normal;
+    color: #000000;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 6px 0;
+}
+
+.br p {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #000000;
+    margin: 0;
+}
+
+
+/* ── LOGIN DIVIDER ── */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.divider span {
+    flex: 1;
+    height: 1px;
+    background: #000000;
+    opacity: 0.35;
+}
+
+.divider em {
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+
+/* ── REGISTER DIVIDER ── */
+.div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.div span {
+    flex: 1;
+    height: 1px;
+    background: #000000;
+    opacity: 0.35;
+}
+
+.div em {
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+
+/* ── LOGIN FORM FIELDS ── */
+.formField {
+    margin-bottom: 20px;
+}
+
+.formField label {
+    color: #000000;
+}
+
+.formField input[type="email"],
+.formField input[type="password"] {
+    background-color: #231c15;
+    color: #f5efe6;
+    border: 1px solid #b89a6a;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formField input[type="email"]:focus,
+.formField input[type="password"]:focus {
+    border-color: #d4b88a;
+    box-shadow: 0 0 0 3px rgba(184,154,106,0.12);
+}
+
+.formField input::placeholder {
+    color: #5a4a36;
+    font-size: 13px;
+}
+
+
+/* ── REGISTER FORM FIELDS ── */
+.form {
+    margin-bottom: 20px;
+}
+
+.formlabel {
+    color: #000000;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"],
+.form input[type="tel"] {
+    background-color: #231c15;
+    color: #f5efe6;
+    border: 1px solid #b89a6a;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form input[type="text"]:focus,
+.form input[type="email"]:focus,
+.form input[type="password"]:focus,
+.form input[type="tel"]:focus {
+    border-color: #d4b88a;
+    box-shadow: 0 0 0 3px rgba(184,154,106,0.12);
+}
+
+.form input::placeholder {
+    color: #5a4a36;
+    font-size: 13px;
+}
+
+
+/* ── LOGIN BUTTON ── */
+#loginBtn {
+    display: block;
+    width: 100%;
+    background-color: #231c15;
+    color: #d4b88a;
+    border: none;
+    padding: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+    font-family: Georgia, serif;
+}
+
+#loginBtn:hover {
+    background-color: #d4b88a;
+}
+
+
+/* ── REGISTER BUTTON ── */
+#regbtn {
+    display: block;
+    width: 100%;
+    background-color: #231c15;
+    color: #d4b88a;
+    border: none;
+    padding: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+    font-family: Georgia, serif;
+}
+
+#regbtn:hover {
+    background-color: #d4b88a;
+}
+
+
+/* ── LOGIN FOOTER LINKS ── */
+.footer-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-links a {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #231c15;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #f5efe6;
+}
+
+.footer-links span {
+    color: #33291e;
+    margin: 0 8px;
+}
+
+
+/* ── REGISTER FOOTER LINKS ── */
+.ft {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.ft a {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #231c15;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.ft a:hover {
+    color: #f5efe6;
+}
+
+.ft span {
+    color: #33291e;
+    margin: 0 8px;
+}
+
+
+/* ── HINT MESSAGE ── */
+#hint {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin: 0 0 16px 0;
+    padding: 0;
+    min-height: 0;
+}

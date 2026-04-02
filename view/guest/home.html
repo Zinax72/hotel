@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/styles/guest.css">
+</head>
+<body>
+    <div class="head">
+        <div class="navbar">
+            <div class="nav-left">
+                <a class="nav-brand" href="home.html">JABUBU</a>
+                <ul>
+                    <li class="menu11"><a href="home.html">Home</a></li>
+                    <li class="menu11"><a href="amenities.html">Amenities</a></li>
+                    <li class="menu11"><a href="rooms.html">Rooms</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                    <ul id="navUsername"></ul>                       
+                    <button id="loginBtn">LOGIN</button> 
+                    <button id="logoutBtn" style="display:none">LOGOUT</button>      
+            </div>
+        </div>
+
+        <div class="room">
+            <img src="../../assets/img/655720437_2081141242708291_3722088565615923606_n.jpg" alt="Thishotel">
+        </div>
+
+        <form id="searchForm" class="searchForm" method="GET">
+            <input type="hidden" name="numAdults" id="numAdults" value="1">
+            <input type="hidden" name="numChildren" id="numChildren" value="0">
+            <input type="hidden" name="hasPet" id="hasPet" value="0">
+            <input type="hidden" name="discountID" id="discountID" value="">
+
+            <div class="formField">
+                <label for="checkIN">CHECK IN</label>
+                <div class="check">
+                    <input type="date" name="checkIN" id="checkIN">
+                </div>
+            </div>
+
+            <div class="formField">
+                <label for="checkOUT">CHECK OUT</label>
+                <div class="check">
+                    <input type="date" name="checkOUT" id="checkOUT">
+                </div>
+            </div>
+
+            <div class="formField">
+                <label>GUESTS</label>
+                <button type="button" id="modalBtn">1 Adult, 0 Children</button>
+            </div>
+
+            <div class="formField">
+                <label>&nbsp;</label>
+                <input class="search1" type="submit" value="Search">
+            </div>
+        </form>
+
+        <div id="result"></div>
+        <div class="amenities" id="amenities"></div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <div class="guestsAge">
+                <label>Adults (18+)</label>
+                <div class="guestsAgeValue">
+                    <button type="button" id="minusAdult">-</button>
+                    <span id="adultCount">1</span>
+                    <button type="button" id="plusAdult">+</button>
+                </div>
+            </div>
+
+            <div class="guestsChild">
+                <label>Children (10 and below)</label>
+                <div class="guestsAgeValue">
+                    <button type="button" id="minusChild">-</button>
+                    <span id="childCount">0</span>
+                    <button type="button" id="plusChild">+</button>
+                </div>
+            </div>
+
+            <div class="pet">
+                <label>Bringing a pet?</label>
+                <input type="checkbox" id="petCheck">
+            </div>
+
+            <div class="discount">
+                <label>Discount:</label><br>
+                <input type="radio" name="discount" value="" checked> None<br>
+                <input type="radio" name="discount" value="1"> PWD<br>
+                <input type="radio" name="discount" value="2"> Senior Citizen<br>
+            </div>
+
+            <button type="button" id="doneBtn">Done</button>
+        </div>
+    </div>
+
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="../../assets/scripts/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,506 @@
+body {
+    background-color: #1a1410;
+    color: #f5efe6;
+    font-family: Georgia, serif;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+    background-image: url('../img/guest.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+/* ── SHARED: NAVBAR ── */
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1410;
+    border-bottom: 1px solid #b89a6a44;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.navbar ul li a {
+    color: #f5efe6;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+.navbar ul li a:hover {
+    color: #b89a6a;
+}
+
+.nav-brand {
+    color: #b89a6a;
+    text-decoration: none;
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+
+
+/* ── SHARED: LOGOUT BUTTON ── */
+#logoutBtn {
+    background-color: transparent;
+    color: #f5efe6;
+    border: 1px solid #b89a6a;
+    padding: 6px 16px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif, serif;
+}
+
+#logoutBtn:hover {
+    color: #b89a6a;
+    background-color: #1a1410;
+}
+
+/* ── SHARED: LOGIN BUTTON ── */
+#loginBtn {
+    background-color: transparent;
+    color: #f5efe6;
+    border: 1px solid #b89a6a;
+    padding: 6px 16px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif, serif;
+}
+
+#loginBtn:hover {
+    color: #b89a6a;
+    background-color: #1a1410;
+}
+
+
+/* ── SHARED: MODAL OVERLAY ── */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+/* ── SHARED: MODAL BOX ── */
+.modal-content {
+    background-color: #231c15;
+    border: 1px solid #b89a6a;
+    padding: 30px;
+    width: 340px;
+    margin: 80px auto;
+    position: relative;
+}
+
+
+/* ── SHARED: CLOSE BUTTON ── */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    font-size: 22px;
+    color: #b89a6a;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #f5efe6;
+}
+
+
+/* ── SHARED: ADULTS ROW ── */
+.guestsAge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #33291e;
+}
+
+.guestsAge label {
+    color: #b89a6a;
+    font-size: 13px;
+}
+
+
+/* ── SHARED: CHILDREN ROW ── */
+.guestsChild {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #33291e;
+}
+
+.guestsChild label {
+    color: #b89a6a;
+    font-size: 13px;
+}
+
+
+/* ── SHARED: COUNTER BUTTONS ── */
+.guestsAgeValue {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.guestsAgeValue button {
+    background-color: transparent;
+    color: #b89a6a;
+    border: 1px solid #b89a6a;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.guestsAgeValue button:hover {
+    background-color: #b89a6a;
+    color: #1a1410;
+}
+
+.guestsAgeValue span {
+    color: #f5efe6;
+    font-size: 16px;
+    min-width: 20px;
+    text-align: center;
+}
+
+
+/* ── SHARED: PET ROW ── */
+.pet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #33291e;
+}
+
+.pet label {
+    color: #b89a6a;
+    font-size: 13px;
+}
+
+
+/* ── SHARED: DISCOUNT ROW ── */
+.discount {
+    padding: 14px 0;
+    border-bottom: 1px solid #33291e;
+    font-size: 13px;
+    color: #f5efe6;
+}
+
+.discount label {
+    color: #b89a6a;
+    font-size: 13px;
+}
+
+
+/* ── SHARED: DONE BUTTON ── */
+#doneBtn {
+    display: block;
+    width: 100%;
+    background-color: #b89a6a;
+    color: #1a1410;
+    border: none;
+    padding: 12px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: Georgia, serif;
+}
+
+#doneBtn:hover {
+    background-color: #d4b88a;
+}
+
+
+/* ── SHARED: ROOM CARDS ── */
+.card {
+    width: calc(33.33% - 20px);
+    background-color: #231c15;
+    color: #f5efe6;
+    border: 1px solid #b89a6a;
+    box-sizing: border-box;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(184,154,106,0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-details {
+    padding: 16px;
+    text-align: center;
+}
+
+.card-details h3 {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    color: #b89a6a;
+    margin-bottom: 8px;
+}
+
+.card-details p {
+    font-size: 13px;
+    color: #f5efe6;
+    margin: 4px 0;
+}
+
+.card a {
+    display: block;
+    text-align: center;
+    background-color: #b89a6a;
+    color: #1a1410;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-top: 10px;
+}
+
+.card a:hover {
+    background-color: #d4b88a;
+}
+
+
+/* ── SHARED: ROOM BADGE ── */
+.room-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #b89a6a;
+    color: #1a1410;
+    padding: 4px 10px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+
+/* ── SHARED: NAV LINKS ── */
+.logins {
+    margin-left: auto;
+}
+
+.logins a {
+    border: 1px solid #b89a6a;
+    padding: 6px 16px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif, serif;
+}
+
+.logins a:hover {
+    color: #b89a6a;
+    background-color: #1a1410;
+}
+
+.menu11 a {
+    border: 1px solid #b89a6a;
+    padding: 6px 16px;
+}
+
+.menu11 a:hover {
+    color: #b89a6a;
+    background-color: #1a1410;
+}
+
+
+/* ── SHARED: FORM FIELD ── */
+.formField {
+    display: flex;
+    flex-direction: column;
+}
+
+.formField label {
+    color: #b89a6a;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+
+/* ── HOME: HERO IMAGE ── */
+.room {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.room img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+/* ── HOME: HERO CONTAINER ── */
+.head {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+
+/* ── HOME: SEARCH FORM ── */
+.searchForm {
+    position: absolute;
+    bottom: 650px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 860px;
+    background-color: rgba(35, 28, 21, 0.85);
+    border: 1px solid #b89a6a;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.searchForm label {
+    color: #b89a6a;
+    font-size: 11px;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+
+/* ── HOME: DATE INPUTS ── */
+.check {
+    background-color: #1a1410;
+    color: #f5efe6;
+    border: 1px solid #b89a6a;
+    padding: 10px;
+    font-size: 14px;
+    font-family: Georgia, serif;
+    color-scheme: dark;
+}
+
+
+/* ── HOME: SUBMIT BUTTON ── */
+.search1 {
+    background-color: #b89a6a;
+    color: #1a1410;
+    border: none;
+    padding: 10px 28px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+}
+
+.search1:hover {
+    background-color: #d4b88a;
+}
+
+
+/* ── HOME: GUESTS BUTTON ── */
+#modalBtn {
+    background-color: transparent;
+    color: #b89a6a;
+    border: 1px solid #b89a6a;
+    padding: 10px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+}
+
+#modalBtn:hover {
+    background-color: #b89a6a;
+    color: #1a1410;
+}
+
+
+/* ── HOME: RESULTS ── */
+#result {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+/* ── ROOMS: GRID ── */
+#rooms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 80px auto 40px auto;
+    padding: 20px;
+}
+
+/* ── ROOMS: GRID ── */
+.bookBtn {
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+    background-color: #b89a6a;
+    color: #1a1410;
+    border: none;
+    padding: 10px 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+}
+
+.bookBtn:hover {
+    background-color: #d4b88a;
+}

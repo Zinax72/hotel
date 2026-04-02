@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/auth.css" />
+    <title>Register</title>
+</head>
+<body>
+    
+     <div class="reg">
+        <div class="br">
+        <h1>Jabubu</h1>
+        <p>Hotel &amp; Resorts</p>
+    </div>
+    <div class="div">
+        <span></span><em>Registration Page</em><span></span>
+    </div>
+
+    <p id="hint"></p>
+    <form id="registerForm" method="POST">
+      
+        <div class="form">
+        <label for="firstName">First Name</label><br>
+        <input type="text" name="firstName" id="firstName" placeholder="First Name" required><br>
+        </div>
+
+        <div class="form">
+        <label for="lastName">Last Name</label><br>
+        <input type="text" name="lastName" id="lastName" placeholder="Last Name" required><br>
+        </div>
+
+        <div class="form">
+        <label for="email">Email</label><br>
+        <input type="email" name="email" id="email" placeholder="Email" required><br>
+        </div>
+
+        <div class="form">
+        <label for="password">Password</label><br>
+        <input type="password" name="password" id="password" placeholder="Password" required><br>
+       </div>
+
+        <div class="form">
+        <label for="confirmPass">Confirm Password</label><br>
+        <input type="password" name="confirmPass" id="confirmPass" placeholder="Confirm Password" required><br>
+        </div>
+
+        <div class="form">
+        <label for="contact">Contact</label><br>
+        <input type="tel" name="contact" id="contact" placeholder="(+63)" required><br>
+        </div>
+
+        <input id = "regbtn" input type="submit" value="REGISTER">
+
+        <div class="ft">
+        <a href="login.html">Already Have an Account?</a>
+        </div>
+    </form>
+    </div>
+    
+    <script src="../assets/scripts/jq.js"></script>
+    <script src="../assets/scripts/auth.js"></script>     
+</body>
+</html>
