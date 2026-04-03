@@ -58,10 +58,8 @@ $(function(){
                     if(data.success) {
                         $("#hint").text("Password changed successfully!");
                         setTimeout(function() {
-                            if(data.role == "ADMIN" || data.role == "MANAGER") {
-                                window.location.href = "../view/manager/home.html";
-                            } else if (data.role == "RECEPTIONIST") {
-                                window.location.href = "../view/receptionist/home.html";
+                            if(data.role == "ADMIN" || data.role == "MANAGER" || data.role == "RECEPTIONIST") {
+                                window.location.href = "../view/staff/dashboard.html";
                             } else {
                                 window.location.href = "../view/guest/home.html";
                             }
@@ -92,13 +90,14 @@ $(function(){
                 },
                 success:function(data){
                     if(data.success){
-                        if(data.role == "ADMIN" || data.role == "MANAGER") {
-                            window.location.href = "../view/manager/home.html";
-                        } else if (data.role == "RECEPTIONIST") {
-                            window.location.href = "../view/receptionist/home.html";
-                        } else {
-                            window.location.href = "../view/guest/home.html";
-                        }
+                        $("hint").text("Logged in successfully!");
+                        setTimeout(function() {
+                            if(data.role == "ADMIN" || data.role == "MANAGER" || data.role == "RECEPTIONIST") {
+                                window.location.href = "../view/staff/dashboard.html";
+                            } else {
+                                window.location.href = "../view/guest/home.html";
+                            }
+                        }, 1000);
                     } else {
                         $("#hint").text(data.hint).show();
                     }

@@ -5,7 +5,7 @@ function getAllReservation() {
     global $conn;
 
     $data = [];
-    $sql = "select res.*, u.userID, u.email, r.roomNo, rt.typeName, d.discountType
+    $sql = "select res.*, u.firstName, u.lastName, u.userID, u.email, r.roomNo, rt.typeName, d.discountType
         from reservations res
         join users u ON res.userID = u.userID
         join rooms r ON res.roomID = r.roomID
@@ -59,14 +59,14 @@ function getReservationByUser($search) {
 function addReservation($userID) {
     global $conn;
 
-    $roomID = $_POST['roomID'];
-    $checkIN = $_POST['checkIN'];
-    $checkOUT = $_POST['checkOUT'];
-    $numAdults = $_POST['numAdults'];
-    $numChildren = $_POST['numChildren'];
+    $roomID = $_GET['roomID'];
+    $checkIN = $_GET['checkIN'];
+    $checkOUT = $_GET['checkOUT'];
+    $numAdults = $_GET['numAdults'];
+    $numChildren = $_GET['numChildren'];
     $totalGuests = $numAdults + $numChildren;
-    $hasPet = $_POST['hasPet'];        
-    $discountID = !empty($_POST['discountID']) ? $_POST['discountID'] : NULL;
+    $hasPet = $_GET['hasPet'];        
+    $discountID = !empty($_GET['discountID']) ? $_GET['discountID'] : NULL;
     
     if ($discountID) {
         $discountVal = "'$discountID'";

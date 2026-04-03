@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations</title>
+    <link rel="stylesheet" href="../../assets/styles/staff.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-left">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="reservations.html">Reservations</a></li>
+            <li class="managerOnly"><a href="rooms.html">Rooms</a></li>
+            <li class="managerOnly"><a href="promotions.html">Promotions</a></li>
+            <li class="managerOnly"><a href="reports.html">Reports</a></li>
+            <li class="adminOnly"><a href="user.html">Manage Users</a></li>
+        </div>
+        <div class="nav-right">
+            <button id="logoutBtn">LOGOUT</button>
+        </div>
+    </div>
+
+    <table id="reservationsTable" border="1">
+        <thead>
+            <tr>
+                <th>Res ID</th>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>Type</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Guests</th>
+                <th>Pet</th>
+                <th>Discount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="reservations"></tbody>
+    </table>
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="../../assets/scripts/aprReservations.js"></script>
+</body>
+</html>

@@ -43,7 +43,7 @@ $(function() {
     });
 
     // close modal
-    $(".close").click(function() {
+    $("#myModal .close").click(function() {
         $("#myModal").hide();
     });
 
@@ -88,6 +88,83 @@ $(function() {
         $("#modalBtn").text(adults + " Adult(s), " + children + " Children");
         $("#myModal").hide();
     });
+
+    $.ajax({
+        url:"../../controller/checkSession.php",
+        type:"GET",
+        dataType:"JSON",
+        success:function(data){
+            if(data.loggedIN) {
+                $("#loginBtn").hide();
+                $("#logoutBtn").show();
+                $("#navUsername").text("WELCOME, Mr.  " + data.firstName);
+            } else {
+                $("#logoutBtn").hide();
+                $("#navLogin").show();
+            }
+        }
+    });
+
+    $("#modalSumm").load("../../view/guest/summary.html", function(){
+
+        $("#confirmModal").appendTo("body");
+        $(document).on("click", "#confirmBtn", function(){
+            $.ajax({
+                url:"../../controller/booking.php",
+                type:"GET",
+                data:{
+                    action:"confirmBooking",
+                    roomID: $("#roomID").val(),
+                    checkIN: $("#checkIN").val(),
+                    checkOUT: $("#checkOUT").val(),
+                    numAdults: $("#numAdults").val(),
+                    numChildren: $("#numChildren").val(),
+                    hasPet: $("#hasPet").val(),
+                    discountID: $("#discountID").val()
+                },
+                success:function(data) {
+                    let d = JSON.parse(data);
+
+                    if (d.success) {
+                        $("#summaryModal").hide();
+                        $("#confirmModal").show();
+
+                        // reset hidden inputs
+                        $("#roomID").val('');
+                        $("#checkIN").val('');
+                        $("#checkOUT").val('');
+                        $("#numAdults").val('');
+                        $("#numChildren").val('');
+                        $("#hasPet").val('');
+                        $("#discountID").val('');
+
+                        // reset summary display
+                        $("#room").text('');
+                        $("#checkINDisplay").text('');
+                        $("#checkOUTDisplay").text('');
+                        $("#adultsDisplay").text('');
+                        $("#childrenDisplay").text('');
+                        $("#petsDisplay").text('');
+                        $("#discountDisplay").text('');
+                        $("#pricePerNightDisplay").text('');
+                        $("#totalDisplay").text('');
+                    }
+                }
+            });
+        });
+    });
+
+    $(document).on("click", "#summaryModal .close", function(){
+        $("#summaryModal").hide();
+    });
+
+    $(document).on("click", "#confirmModal .close", function(){
+        $("#confirmModal").hide();
+    });
+
+    $(document).on("click", ".closeConfirmBtn", function(){
+        $("#confirmModal").hide();
+    });
 });
 
 function loadRooms(checkIN, checkOUT, guests, numAdults, numChildren, hasPet, discountID) {
@@ -125,7 +202,16 @@ function loadRooms(checkIN, checkOUT, guests, numAdults, numChildren, hasPet, di
                             <p>₱${e.pricePerNight} / night</p>
                             <p>Max ${e.maxOccupancy} guests</p>
                             <p>Floor ${e.floor}</p>
-                            <a href="/final/controller/booking.php?roomID=${e.roomID}&checkIN=${checkIN}&checkOUT=${checkOUT}&numAdults=${numAdults}&numChildren=${numChildren}&hasPet=${hasPet}&discountID=${discountID}">Book Now</a>
+                            <button class="bookNowBtn"
+                                data-roomID="${e.roomID}"
+                                data-checkin="${checkIN}"
+                                data-checkout="${checkOUT}"
+                                data-numadults="${numAdults}"
+                                data-numchildren="${numChildren}"
+                                data-haspet="${hasPet}"
+                                data-discountid="${discountID}">
+                                BOOK NOW
+                            </button>
                         </div>
                     </div>
                 `;
@@ -139,18 +225,14 @@ function loadRooms(checkIN, checkOUT, guests, numAdults, numChildren, hasPet, di
     });
 }
 
-$.ajax({
-    url:"../../controller/checkSession.php",
-    type:"GET",
-    dataType:"JSON",
-    success:function(data){
-        if(data.loggedIN) {
-            $("#loginBtn").hide();
-            $("#logoutBtn").show();
-            $("#navUsername").text("WELCOME, Mr.  " + data.firstName);
-        } else {
-            $("#logoutBtn").hide();
-            $("#navLogin").show();
-        }
-    }
+$(document).on("click", ".bookNowBtn", function(){
+    let roomID = $(this).data("roomid");
+    let checkIN = $(this).data("checkin");
+    let checkOUT = $(this).data("checkout");
+    let numAdults = $(this).data("numadults");
+    let numChildren = $(this).data("numchildren");
+    let hasPet = $(this).data("haspet");
+    let discountID = $(this).data("discountid");
+
+    openSummary(roomID, checkIN, checkOUT, numAdults, numChildren, hasPet, discountID);
 });

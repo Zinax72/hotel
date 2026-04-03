@@ -115,6 +115,51 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+/* ── CONFIRM MODAL ── */
+#confirmModal {
+    z-index: 1001;
+}
+
+#confirmModal .modal-content {
+    text-align: center;
+    padding: 40px;
+}
+
+#confirmModal h3 {
+    color: #b89a6a;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+#confirmModal p {
+    color: #f5efe6;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin: 8px 0;
+}
+
+.closeConfirmBtn {
+    display: block;
+    width: 100%;
+    background-color: #b89a6a;
+    color: #1a1410;
+    border: none;
+    padding: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: Georgia, serif;
+    text-transform: uppercase;
+}
+
+.closeConfirmBtn:hover {
+    background-color: #d4b88a;
 }
 
 
@@ -128,7 +173,6 @@ body {
     position: relative;
 }
 
-
 /* ── SHARED: CLOSE BUTTON ── */
 .close {
     position: absolute;
@@ -141,6 +185,47 @@ body {
 
 .close:hover {
     color: #f5efe6;
+}
+
+/* ── SUMMARY MODAL ── */
+.summary {
+    border: 1px solid #b89a6a;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.summary p {
+    color: #f5efe6;
+    font-size: 13px;
+    margin: 8px 0;
+    letter-spacing: 1px;
+}
+
+.summary h3 {
+    color: #b89a6a;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+/* ── CONFIRM BUTTON ── */
+#confirmBtn {
+    display: block;
+    width: 100%;
+    background-color: #b89a6a;
+    color: #1a1410;
+    border: none;
+    padding: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: Georgia, serif;
+    text-transform: uppercase;
+}
+
+#confirmBtn:hover {
+    background-color: #d4b88a;
 }
 
 
@@ -473,6 +558,20 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+}
+
+.bookNowBtn {
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+    background-color: #b89a6a;
+    color: #1a1410;
+    border: none;
+    padding: 10px 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-family: Georgia, serif;
 }
 
 

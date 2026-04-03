@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/styles/guest.css">
+</head>
+<body>
+    <div id="summaryModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Booking Summary</h2>
+
+            <input type="hidden" id="roomID">
+            <input type="hidden" id="checkIN">
+            <input type="hidden" id="checkOUT">
+            <input type="hidden" id="numAdults">
+            <input type="hidden" id="numChildren">
+            <input type="hidden" id="hasPet">
+            <input type="hidden" id="discountID">
+
+            <div class="summary">
+                <h3 id="room"></h3>
+                <p id="checkINDisplay"></p>
+                <p id="checkOUTDisplay"></p>
+                <p id="adultsDisplay"></p>
+                <p id="childrenDisplay"></p>
+                <p id="petsDisplay"></p>
+                <p id="discountDisplay"></p>
+                <p id="pricePerNightDisplay"></p>
+                <p id="totalDisplay"></p>
+            </div>
+
+            <button id="confirmBtn">Confirm Booking</button>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Booking Confirmed</h3>
+            <p>Your reservation has been submitted successfully</p>
+            <p>Status: PENDING APPROVAL</p>
+            <button class="closeConfirmBtn">Confirm</button>
+        </div>
+
+    </div>
+</body>
+</html>

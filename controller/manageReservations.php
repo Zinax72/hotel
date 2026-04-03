@@ -1,77 +1,81 @@
 <?php 
-include("../db.php");
-
 session_start();
+include("../db.php");
+include("../model/reservations.php");
 
-// protect the page
-if(!in_array($_SESSION['role'], ['ADMIN', 'MANAGER'])) {
-    header("Location: ../../view/loginPage.html");
+if(!isset($_SESSION['userID']) || 
+   !in_array($_SESSION['role'], ['RECEPTIONIST', 'MANAGER', 'ADMIN'])) {
+    echo json_encode([
+        "success" => false,
+        "hint" => "Unauthorized"
+    ]);
     exit();
 }
 
-$sql = "select res.*, u.userID, u.email, r.roomNo, rt.typeName, d.discountType
-from reservations res
-join users u ON res.userID = u.userID
-join rooms r ON res.roomID = r.roomID
-join roomtypes rt ON r.roomTypeID = rt.typeID
-left join discount d ON res.discountID = d.discountID
-ORDER BY res.createdAt DESC";
+$conn = getConnection($_SESSION['role']);
+$action = isset($_POST['action']) ? $_POST['action'] : '';
 
-$result = $conn->query($sql);
+switch($action) {
+    case 'getAllRes':
+        getAllReservation();
+        break;
+    case 'approveRes':
+        approveRes();
+        break;
+    case 'cancelRes':
+        cancelRes();
+        break;
+    case 'completeRes':
+        completeRes();
+        break;
+    case 'deleteRes':
+        deleteRes();
+        break;
+}
 
-echo"<table border = 1>
-<th>RESERVATION ID</th>
-<th>GUEST NAME</th>
-<th>ROOM NUMBER</th>
-<th>ROOM TYPE</th>
-<th>CHECK IN</th>
-<th>CHECK OUT</th>
-<th>GUESTS</th>
-<th>PETS</th>
-<th>DISCOUNT</th>
-<th>NIGHTS</th>
-<th>STATUS</th>
-<th>BOOKED ON</th>
-<th>ACTIONS</th>
-";
+function approveRes() {
+    global $conn;
 
+    $resID = $_POST['resID'];
+    $success = updateReservationStatus($resID, 'CONFIRMED');
 
-while ($row = $result->fetch_assoc()){
-    echo"<td>";
-    echo 
-    echo"</td>";
+    echo json_encode([
+        "success" => $success
+    ]);
+}
 
-    echo"<td>";
-    echo 
-    echo"</td>";
+function cancelRes() {
+    global $conn;
 
-    echo"<td>";
-    echo 
-    echo"</td>";
+    $resID = $_POST['resID'];
+    $success = updateReservationStatus($resID, 'CANCELLED');
 
-    echo"<td>";
-    echo 
-    echo"</td>";
+    echo json_encode([
+        "success" => $success
+    ]);
+}
 
-    echo"<td>";
-    echo 
-    echo"</td>";
+function completeRes() {
+    global $conn;
 
-    echo"<td>";
-    echo 
-    echo"</td>";
+    $resID = $_POST['resID'];
+    $success = updateReservationStatus($resID, 'COMPLETED');
 
-    echo"<td>";
-    echo 
-    echo"</td>";
+    echo json_encode([
+        "success" => $success
+    ]);
+}
 
-    echo"<td>";
-    echo 
-    echo"</td>";
+function deleteRes() {
+    global $conn;
     
-    echo"<td>";
-    echo 
-    echo"</td>";
+    $resID = $_POST['resID'];
+
+    $success = archiveReservation($resID, 'DELETED');
+
+    echo json_encode([
+        "success" => $success
+    ]);
 }
 
 ?>

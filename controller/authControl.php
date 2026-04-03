@@ -134,7 +134,7 @@ function forgotPass() {
 
     $user = getUserByID($userID);
 
-    if(!$user || !password_verify($password, $user['password'])) {
+    if(!$user || !password_verify($oldPassword, $user['password'])) {
         echo json_encode([
             "success" => false,
             "hint" => "Old password is incorrect."

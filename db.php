@@ -42,10 +42,8 @@ if(!function_exists('getConnection')){
         }
         return $conn;
     }
-
     $conn = getConnection();
 }
-
 
    
 ?>

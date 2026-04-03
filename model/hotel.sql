@@ -417,3 +417,40 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- ── GUEST ──
+CREATE USER 'hotel_guest'@'localhost' IDENTIFIED BY 'guest123';
+GRANT SELECT ON hotel.rooms TO 'hotel_guest'@'localhost';
+GRANT SELECT ON hotel.roomtypes TO 'hotel_guest'@'localhost';
+GRANT SELECT ON hotel.discount TO 'hotel_guest'@'localhost';
+GRANT SELECT ON hotel.promotions TO 'hotel_guest'@'localhost';
+GRANT SELECT, INSERT ON hotel.reservations TO 'hotel_guest'@'localhost';
+GRANT SELECT, INSERT ON hotel.payments TO 'hotel_guest'@'localhost';
+GRANT SELECT, INSERT ON hotel.login_audit TO 'hotel_guest'@'localhost';
+
+-- ── RECEPTIONIST ──
+CREATE USER 'hotel_receptionist'@'localhost' IDENTIFIED BY 'receptionist123';
+GRANT SELECT ON hotel.rooms TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.roomtypes TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.discount TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.promotions TO 'hotel_receptionist'@'localhost';
+GRANT SELECT, UPDATE ON hotel.reservations TO 'hotel_receptionist'@'localhost';
+GRANT SELECT, INSERT ON hotel.payments TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.users TO 'hotel_receptionist'@'localhost';
+GRANT SELECT, INSERT ON hotel.login_audit TO 'hotel_receptionist'@'localhost';
+
+-- ── MANAGER ──
+CREATE USER 'hotel_manager'@'localhost' IDENTIFIED BY 'manager123';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.rooms TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.roomtypes TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.reservations TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.reservations_archive TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.promotions TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.payments TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT ON hotel.users TO 'hotel_manager'@'localhost';
+GRANT SELECT ON hotel.discount TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT ON hotel.login_audit TO 'hotel_manager'@'localhost';
+
+-- ── ADMIN ──
+CREATE USER 'hotel_admin'@'localhost' IDENTIFIED BY 'admin123';
+GRANT ALL PRIVILEGES ON hotel.* TO 'hotel_admin'@'localhost';
