@@ -1,0 +1,75 @@
+body {
+            background: #1a1410;
+        }
+
+        .sidebar {
+        color: white;
+        position: fixed;
+        padding: 20px;
+        align-items: center;
+        box-sizing: border-box;
+        text-transform: capitalize;
+        gap: 24px;
+        border-right: 4px solid #b89a6a;
+        position: fixed;      
+        top: 0;
+        left: 0;
+        height: 100vh;        
+        width: 220px;
+        }
+
+        .sidebar h2 {
+            text-align: justify;
+            color: #b89a6a ;
+        }
+
+        .sidebar a {
+            font-family: 'Times New Roman', Times, serif;
+             border: 1px solid #1a1410;
+            padding: 6px 16px;
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            font-size: 20px;
+            text-transform: capitalize;
+        }
+        .sidebar  a:hover {
+        color: gray;
+        }
+
+        .sidebar-bottom {
+            position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+}
+
+        .main {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin: 0;
+        }
+
+        .chart {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
