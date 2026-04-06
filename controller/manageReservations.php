@@ -2,6 +2,7 @@
 session_start();
 include("../db.php");
 include("../model/reservations.php");
+include_once("../model/rooms.php");
 
 if(!isset($_SESSION['userID']) || 
    !in_array($_SESSION['role'], ['RECEPTIONIST', 'MANAGER', 'ADMIN'])) {
@@ -13,7 +14,8 @@ if(!isset($_SESSION['userID']) ||
 }
 
 $conn = getConnection($_SESSION['role']);
-$action = isset($_POST['action']) ? $_POST['action'] : '';
+$action = isset($_GET['action']) ? $_GET['action'] : 
+          (isset($_POST['action']) ? $_POST['action'] : '');
 
 switch($action) {
     case 'getAllRes':
@@ -28,8 +30,23 @@ switch($action) {
     case 'completeRes':
         completeRes();
         break;
+    case 'getRes':
+        getRes();
+        break;
+    case 'updateRes':
+        updateRes();
+        break;
     case 'deleteRes':
         deleteRes();
+        break;
+    case 'getRooms':
+        roomDropdown();
+        break;
+    case 'getAllArchive':
+        getAllArchive();
+        break;
+    case 'deleteArc':
+        deleteArc();
         break;
 }
 
@@ -58,7 +75,7 @@ function cancelRes() {
 function completeRes() {
     global $conn;
 
-    $resID = $_POST['resID'];
+    $resID = $_POST['resID'];                           
     $success = updateReservationStatus($resID, 'COMPLETED');
 
     echo json_encode([
@@ -78,4 +95,39 @@ function deleteRes() {
     ]);
 }
 
+function getRes() {
+    global $conn;
+
+    $resID = $_GET['resID'];
+    $data = getReservationByID($resID);
+    echo json_encode($data);
+}
+
+function updateRes() {
+    global $conn;
+    
+    $resID = $_POST['resID'];
+    $success = editReservation($resID);
+    echo json_encode([
+        "success" => $success
+    ]);
+}
+
+function roomDropdown() {
+    global $conn;
+
+    $data = getRoomsForDropdown();
+    echo json_encode($data);
+}
+
+function deleteArc() {
+    global $conn;
+
+    $archiveID = $_POST['archiveID'];
+    $success = deleteReservation($archiveID);
+
+    echo json_encode([
+        "success" => $success
+    ]);
+}
 ?>

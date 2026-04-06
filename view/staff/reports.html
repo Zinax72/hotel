@@ -7,18 +7,19 @@
     <link rel="stylesheet" href="../../assets/styles/staff.css">
 </head>
 <body>
-    <div class="navbar">
-        <div class="nav-left">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="reservations.html">Reservations</a></li>
-            <li class="managerOnly"><a href="rooms.html">Rooms</a></li>
-            <li class="managerOnly"><a href="promotions.html">Promotions</a></li>
-            <li class="managerOnly"><a href="reports.html">Reports</a></li>
-            <li class="adminOnly"><a href="user.html">Manage Users</a></li>
+    <div class="sidebar">
+        <h2>Hotel Management</h2>
+        
+        <a href="dashboard.html" class="menu-item">Dashboard</a>
+        <a href="rooms.html" class="managerOnly">Rooms</a>
+        <a href="reservations.html" class="managerOnly">Reservations</a>
+        <a href="promotions.html" class="managerOnly">Promotions</a>
+        <a href="reports.html" class="managerOnly">Reports</a>
+        <a href="user.html" class="adminOnly">Manage Users</a>
+        
+        <div class="sidebar-bottom">
+            <a href="#" id="logoutBtn" class="menu-item logout">LOGOUT</a>
         </div>
-        <div class="nav-right">
-            <button id="logoutBtn">LOGOUT</button>
-        </div>
-    </div>   
+    </div>
 </body>
 </html>

@@ -25,16 +25,11 @@ function getAllReservation() {
 function getReservationByID($resID) {
     global $conn;
 
-    $data = [];
-
     $sql = "SELECT * FROM reservations WHERE resID='$resID'";
 
     $result = $conn->query($sql);
 
-    while ($row = $result->fetch_assoc()){
-        $data[] = $row;
-    }
-    echo json_encode($data);
+    return $result->fetch_assoc();
 }
 
 function getReservationByUser($search) {
@@ -59,13 +54,13 @@ function getReservationByUser($search) {
 function addReservation($userID) {
     global $conn;
 
-    $roomID = $_GET['roomID'];
-    $checkIN = $_GET['checkIN'];
-    $checkOUT = $_GET['checkOUT'];
-    $numAdults = $_GET['numAdults'];
-    $numChildren = $_GET['numChildren'];
+    $roomID = $_GET['roomID'] ?? '';
+    $checkIN = $_GET['checkIN'] ?? '';
+    $checkOUT = $_GET['checkOUT'] ?? '';
+    $numAdults = $_GET['numAdults'] ?? 1;
+    $numChildren = $_GET['numChildren'] ?? 0;
     $totalGuests = $numAdults + $numChildren;
-    $hasPet = $_GET['hasPet'];        
+    $hasPet = $_GET['hasPet'] ?? 0;        
     $discountID = !empty($_GET['discountID']) ? $_GET['discountID'] : NULL;
     
     if ($discountID) {
@@ -114,4 +109,55 @@ function deleteReservation($archiveID) {
     return $conn->query($sql);
 }
 
+function editReservation($resID) {
+    global $conn;
+
+    $checkIN    = $_POST['checkIN'] ?? '';
+    $checkOUT   = $_POST['checkOUT'] ?? '';
+    $roomID     = $_POST['roomID'] ?? '';
+    $guestsNum  = $_POST['guestsNum'] ?? 1;
+    $hasPet     = $_POST['hasPet'] ?? 0;
+    $discountID = $_POST['discountID'] ?? '';
+    $status     = $_POST['status'] ?? 'PENDING';
+    
+    // Handle discountID correctly (NULL vs value)
+    if ($discountID == '' || $discountID == '0') {
+        $discountPart = "discountID = NULL";
+    } else {
+        $discountPart = "discountID = '$discountID'";
+    }
+
+    $sql = "UPDATE reservations SET
+            checkIN = '$checkIN', 
+            checkOUT = '$checkOUT', 
+            roomID = '$roomID', 
+            guestsNum = '$guestsNum', 
+            hasPet = '$hasPet', 
+            $discountPart, 
+            status = '$status'
+            WHERE resID = '$resID'";
+
+    return $conn->query($sql);
+}
+
+function getAllArchive() {
+    global $conn;
+
+    $data = [];
+    $sql = "select resa.*, u.firstName, u.lastName, u.userID, u.email, r.roomNo, rt.typeName, d.discountType
+        from reservations_archive resa
+        join users u ON resa.userID = u.userID
+        join rooms r ON resa.roomID = r.roomID
+        join roomtypes rt ON r.roomTypeID = rt.typeID
+        left join discount d ON resa.discountID = d.discountID
+        ORDER BY resa.createdAt DESC";
+
+    $result = $conn->query($sql);
+
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+
+    echo json_encode($data);
+}
 ?>

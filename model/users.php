@@ -34,11 +34,11 @@ function getUserByEmail($email) {
 function addUser() {
     global $conn;
 
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $contact = $_POST['contact'];   
+    $firstName = $_POST['firstName'] ?? '';
+    $lastName = $_POST['lastName'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $contact = $_POST['contact'] ?? '';   
 
     //hash password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -93,4 +93,23 @@ function emailExists($email) {
     return $result->num_rows > 0;
 }
 
+function editUser($userID) {
+    global $conn;
+
+    $firstName = $_POST['firstName'] ?? '';
+    $lastName = $_POST['lastName'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $contactNo = $_POST['contactNo'] ?? '';
+    $role = $_POST['role'] ?? 'GUEST';
+
+    $sql = "UPDATE users SET
+            firstname = '$firstName',
+            lastName = '$lastName',
+            email = '$email',
+            contactNo = '$contactNo',
+            role = '$role'
+            WHERE userID = '$userID'";
+            
+    return $conn->query($sql);
+}
 ?>

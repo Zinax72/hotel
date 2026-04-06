@@ -7,39 +7,102 @@
     <link rel="stylesheet" href="../../assets/styles/staff.css">
 </head>
 <body>
-    <div class="navbar">
-        <div class="nav-left">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="reservations.html">Reservations</a></li>
-            <li class="managerOnly"><a href="rooms.html">Rooms</a></li>
-            <li class="managerOnly"><a href="promotions.html">Promotions</a></li>
-            <li class="managerOnly"><a href="reports.html">Reports</a></li>
-            <li class="adminOnly"><a href="user.html">Manage Users</a></li>
-        </div>
-        <div class="nav-right">
-            <button id="logoutBtn">LOGOUT</button>
+    <div class="sidebar">
+        <h2>Hotel Management</h2>
+        
+        <a href="dashboard.html" class="menu-item">Dashboard</a>
+        <a href="rooms.html" class="managerOnly">Rooms</a>
+        <a href="reservations.html" class="managerOnly">Reservations</a>
+        <a href="promotions.html" class="managerOnly">Promotions</a>
+        <a href="reports.html" class="managerOnly">Reports</a>
+        <a href="user.html" class="adminOnly">Manage Users</a>
+        
+        <div class="sidebar-bottom">
+            <a href="#" id="logoutBtn" class="menu-item logout">LOGOUT</a>
         </div>
     </div>
 
-    <table id="reservationsTable" border="1">
-        <thead>
-            <tr>
-                <th>Res ID</th>
-                <th>Guest</th>
-                <th>Room</th>
-                <th>Type</th>
-                <th>Check In</th>
-                <th>Check Out</th>
-                <th>Guests</th>
-                <th>Pet</th>
-                <th>Discount</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="reservations"></tbody>
-    </table>
+    <div class="main">
+        <div class="table-header">
+            <h2 id="tableName"></h2>
+            <button id="switchBtn"></button>
+        </div>
+        <table id="reservationsTable">
+            <thead>
+                <tr>
+                    <th>Res ID</th>
+                    <th>Guest</th>
+                    <th>Room</th>
+                    <th>Type</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Guests</th>
+                    <th>Pet</th>
+                    <th>Discount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="reservations"></tbody>
+        </table>
+        <div id="emptyTable"></div>
+    </div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>EDIT RESERVATION</h3>
+        
+        <input type="hidden" id="editResID">
+        
+        <div class="edit-grid">
+            <div class="edit-field">
+                <label>CHECK IN</label>
+                <input type="date" id="editCheckIN">
+            </div>
+            <div class="edit-field">
+                <label>CHECK OUT</label>
+                <input type="date" id="editCheckOUT">
+            </div>
+            <div class="edit-field">
+                <label>ROOM</label>
+                <select id="editRoomID"></select>
+            </div>
+            <div class="edit-field">
+                <label>GUESTS</label>
+                <input type="number" id="editGuestsNum" min="1">
+            </div>
+            <div class="edit-field">
+                <label>PET</label>
+                <select id="editHasPet">
+                    <option value="0">NO</option>
+                    <option value="1">YES</option>
+                </select>
+            </div>
+            <div class="edit-field">
+                <label>DISCOUNT</label>
+                <select id="editDiscountID">
+                    <option value="">NONE</option>
+                    <option value="1">PWD</option>
+                    <option value="2">SENIOR CITIZEN</option>
+                </select>
+            </div>
+            <div class="edit-field full-width">
+                <label>STATUS</label>
+                <select id="editStatus">
+                    <option value="PENDING">PENDING</option>
+                    <option value="CONFIRMED">CONFIRMED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                </select>
+            </div>
+        </div>
+        
+        <button id="saveEditBtn">SAVE CHANGES</button>
+    </div>
+</div>
+    
     <script src="../../assets/scripts/jq.js"></script>
-    <script src="../../assets/scripts/aprReservations.js"></script>
+    <script src="../../assets/scripts/reservations.js"></script>
 </body>
 </html>

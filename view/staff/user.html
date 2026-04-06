@@ -7,18 +7,83 @@
     <link rel="stylesheet" href="../../assets/styles/staff.css">
 </head>
 <body>
-    <div class="navbar">
-        <div class="nav-left">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="reservations.html">Reservations</a></li>
-            <li class="managerOnly"><a href="rooms.html">Rooms</a></li>
-            <li class="managerOnly"><a href="promotions.html">Promotions</a></li>
-            <li class="managerOnly"><a href="reports.html">Reports</a></li>
-            <li class="adminOnly"><a href="user.html">Manage Users</a></li>
+    <div class="sidebar">
+        <h2>Hotel Management</h2>
+        
+        <a href="dashboard.html" class="menu-item">Dashboard</a>
+        <a href="rooms.html" class="managerOnly">Rooms</a>
+        <a href="reservations.html" class="managerOnly">Reservations</a>
+        <a href="promotions.html" class="managerOnly">Promotions</a>
+        <a href="reports.html" class="managerOnly">Reports</a>
+        <a href="user.html" class="adminOnly">Manage Users</a>
+        
+        <div class="sidebar-bottom">
+            <a href="#" id="logoutBtn" class="menu-item logout">LOGOUT</a>
         </div>
-        <div class="nav-right">
-            <button id="logoutBtn">LOGOUT</button>
+    </div>
+
+    <div class="main">
+        <div class="table-header">
+            <h2 id="tableName">USERS</h2>
+            <button id="addBtn">ADD</button>
         </div>
-    </div>  
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="users"></tbody>
+        </table>
+        <div id="emptyTable"></div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>EDIT USER DETAILS</h3>
+            
+            <input type="hidden" id="editUserID">
+            
+            <div class="edit-grid">
+                <div class="edit-field">
+                    <label>FIRST NAME</label>
+                    <input type="text" id="editFirstName">
+                </div>
+                <div class="edit-field">
+                    <label>LAST NAME</label>
+                    <input type="text" id="editLastName">
+                </div>
+                <div class="edit-field">
+                    <label>EMAIL</label>
+                    <input type="email" id="editEmail">
+                </div>
+                <div class="edit-field">
+                    <label>CONTACT</label>
+                    <input type="tel" id="editContactNo">
+                </div>
+                <div class="edit-field">
+                    <label>ROLE</label>
+                    <select id="editRole">
+                        <option value="GUEST">GUEST</option>
+                        <option value="RECEPTIONIST">RECEPTIONIST</option>
+                        <option value="MANAGER">MANAGER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="saveEditBtn">SAVE CHANGES</button>
+        </div>
+    </div>
+
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="../../assets/scripts/users.js"></script>
 </body>
 </html>

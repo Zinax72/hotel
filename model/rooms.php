@@ -108,5 +108,22 @@ function deleteRoom($roomID){
     return $conn->query($sql);
 }
 
+function getRoomsForDropdown() {
+    global $conn;
+    
+    $sql = "SELECT r.roomID, r.roomNo, rt.typeName 
+            FROM rooms r 
+            JOIN roomtypes rt ON r.roomTypeID = rt.typeID
+            ORDER BY r.roomNo ASC";
+    
+    $result = $conn->query($sql);
+    $data = [];
+    
+    while($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    
+    return $data; // ← ONLY return, no echo!
+}
 
 ?>

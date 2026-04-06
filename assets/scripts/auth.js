@@ -56,7 +56,7 @@ $(function(){
                 },
                 success:function(data){
                     if(data.success) {
-                        $("#hint").text("Password changed successfully!");
+                        $("#hint").text("Password changed successfully!").show();
                         setTimeout(function() {
                             if(data.role == "ADMIN" || data.role == "MANAGER" || data.role == "RECEPTIONIST") {
                                 window.location.href = "../view/staff/dashboard.html";
@@ -88,9 +88,9 @@ $(function(){
                     email:email,
                     password:password
                 },
-                success:function(data){
+                success:function(data){         
                     if(data.success){
-                        $("hint").text("Logged in successfully!");
+                        $("#hint").text("Logged in successfully!").fadeIn(750).css("color", "green");
                         setTimeout(function() {
                             if(data.role == "ADMIN" || data.role == "MANAGER" || data.role == "RECEPTIONIST") {
                                 window.location.href = "../view/staff/dashboard.html";

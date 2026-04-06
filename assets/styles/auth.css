@@ -213,8 +213,8 @@ body {
 }
 
 
-/* ── LOGIN BUTTON ── */
-#loginBtn {
+/* ── BUTTONS ── */
+#loginBtn, #regBtn, #forgotBtn {
     display: block;
     width: 100%;
     background-color: #231c15;
@@ -229,30 +229,11 @@ body {
     font-family: Georgia, serif;
 }
 
-#loginBtn:hover {
+#loginBtn:hover, #regBtn:hover, #forgotBtn:hover {
     background-color: #d4b88a;
+        color: #231c15;
 }
 
-
-/* ── REGISTER BUTTON ── */
-#regbtn {
-    display: block;
-    width: 100%;
-    background-color: #231c15;
-    color: #d4b88a;
-    border: none;
-    padding: 12px;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 8px;
-    font-family: Georgia, serif;
-}
-
-#regbtn:hover {
-    background-color: #d4b88a;
-}
 
 
 /* ── LOGIN FOOTER LINKS ── */
@@ -311,4 +292,5 @@ body {
     margin: 0 0 16px 0;
     padding: 0;
     min-height: 0;
+    font-size: 20px;
 }
