@@ -26,7 +26,7 @@ $(function(){
                 },
                 success:function(data){
                     if(data.success){
-                        alert("WOW REGISTERED NA SIYA");
+                        alert("Registered Successfully");
                         window.location.href="login.html?registered=true"
                     } else {
                         $("#hint").text(data.hint).show();
@@ -39,7 +39,7 @@ $(function(){
     if($("#forgotPass").length) {
         $("#forgotPass").submit(function(e){
             e.preventDefault();
-
+            let email = $("#email").val();
             let oldPassword = $("#oldPassword").val();
             let newPassword = $("#newPassword").val();
             let confirmNewPassword = $("#confirmNewPassword").val();
@@ -50,6 +50,7 @@ $(function(){
                 dataType:"JSON",
                 data:{
                     action:"forgotPass",
+                    email:email,
                     oldPassword:oldPassword,
                     newPassword:newPassword,
                     confirmNewPassword:confirmNewPassword

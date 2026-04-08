@@ -119,28 +119,36 @@ function logoutUser() {
 function forgotPass() {
     global $conn;
 
-    $userID = $_POST['userID'];
-    $oldPassword = $_POST['oldPassword'];
-    $newPassword = $_POST['newPassword'];
-    $confirmNewPass = $_POST['confirmNewPassword'];
+    $email = $_POST['email'] ?? null;
+    $oldPassword = $_POST['oldPassword'] ?? null;
+    $newPassword = $_POST['newPassword'] ?? null;
+    $confirmNewPass = $_POST['confirmNewPassword'] ?? null;
 
-    $user = getUserByID($userID);
+    $user = getUserByEmail($email);
+
+    if (empty($email) || empty($oldPassword) || empty($newPassword) || empty($confirmNewPass)) {
+        echo json_encode([
+            "success" => false,
+            "hint" => "Missing required fields."
+        ]);
+        exit;
+    }    
 
     if(!$user || !password_verify($oldPassword, $user['password'])) {
         echo json_encode([
             "success" => false,
             "hint" => "Old password is incorrect."
         ]);
-        return;
+        exit;
     }
 
     // if passwords do not match
     if ($newPassword !== $confirmNewPass) {
         echo json_encode([
             "success" => false,
-            "hint" => "Password do not match."
+            "hint" => "Passwords do not match."
         ]);
-        return;
+        exit;
     }
 
     // password must be more than 8 chractres
@@ -149,13 +157,13 @@ function forgotPass() {
             "success" => false,
             "hint" => "Password must be exactly 8 or more characters."
         ]);
-        return;
+        exit;
     }
 
-    if(updatePassword($userID)) {
+    if(updatePassword($email,$newPassword)) {
         echo json_encode([
             "success" => true,
-            "role" => $_SESSION['role']
+            "role" => $_SESSION['role']?? 'guest'
         ]);
     } else {
         echo json_encode([
@@ -163,5 +171,6 @@ function forgotPass() {
             "hint" => "Failed to update password"
         ]);
     }
+    exit;
 }
 ?>

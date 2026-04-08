@@ -16,8 +16,13 @@
         <span></span><em>Forgot Password</em><span></span>
     </div>
     
-    <p id="hint"></p>
+     <p id="hint"></p>
     <form id="forgotPass" method="POST">   
+
+    <div class="formField">
+        <label for="email">Email Address</label><br>
+        <input type="email" name="email" id="email" placeholder="Email" required><br>
+    </div>
 
     <div class="formField">
         <label for="password">Old Password</label><br>
@@ -36,7 +41,12 @@
        
     <input id="forgotBtn" type="submit" value="Confirm">
     </form>
+    <div class="footer-links">
+        <a href="login.html">Already Have an Account?</a>
+        </div>
     </div>
+
+        
 
     <script src="../assets/scripts/jq.js"></script>
     <script src="../assets/scripts/auth.js"></script> 

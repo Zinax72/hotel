@@ -63,12 +63,23 @@ function loadRooms(){
         type:"GET",
         success:function(data){
             let rooms = JSON.parse(data);
+            
+            const roomImages = {
+                "Standard": "../../assets/img/rooms.jpg",
+                "Deluxe": "../../assets/img/standard.jpg",
+                "Suite": "../../assets/img/suite.jpg",
+                "Family":"../../assets/img/Family.jpg",
+                "Presidential":"../../assets/img/Pres.jpg"
+              
+            };
+
 
             rooms.forEach(e => {
+                const imageSrc = roomImages[e.typeName] || "../../assets/img/rooms.jpg";
                 let row = `
                     <div class="card">
                         <div class="room-img" style="position:relative">
-                            <img src="../../assets/img/rooms.jpg" alt="Room Image">
+                            <img src=".<img src="${imageSrc}" alt="${e.typeName} Room"">
                             <span class="room-badge">${e.typeName}</span>
                         </div>
                         <div class="card-details">
