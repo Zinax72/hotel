@@ -9,17 +9,113 @@
 <body>
     <div class="sidebar">
         <h2>Hotel Management</h2>
-        
         <a href="dashboard.html" class="menu-item">Dashboard</a>
         <a href="rooms.html" class="managerOnly">Rooms</a>
         <a href="reservations.html" class="managerOnly">Reservations</a>
         <a href="promotions.html" class="managerOnly">Promotions</a>
         <a href="reports.html" class="managerOnly">Reports</a>
         <a href="user.html" class="adminOnly">Manage Users</a>
-        
         <div class="sidebar-bottom">
             <a href="#" id="logoutBtn" class="menu-item logout">LOGOUT</a>
         </div>
-    </div>   
+    </div>
+
+    <div class="main">
+        <div class="table-header">
+            <h2 id="tableName">PROMOTIONS</h2>
+            <button id="addBtn">ADD PROMOTION</button>
+        </div>
+        
+        <table id="promotionsTable">
+            <thead>
+                <tr>
+                    <th>Promo ID</th>
+                    <th>Promotion Name</th>
+                    <th>Discount (%)</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="promotions"></tbody>
+        </table>
+        <div id="emptyTable"></div>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>ADD NEW PROMOTION</h3>
+            
+            <div class="add-grid">
+                <div class="add-field">
+                    <label>PROMOTION NAME</label>
+                    <input type="text" id="addPromoName" placeholder="e.g. Summer Sale">
+                </div>
+                <div class="add-field">
+                    <label>DISCOUNT PERCENT (%)</label>
+                    <input type="number" id="addDiscountPercent" step="0.01" min="0" max="100">
+                </div>
+                <div class="add-field">
+                    <label>START DATE</label>
+                    <input type="date" id="addStartDate">
+                </div>
+                <div class="add-field">
+                    <label>END DATE</label>
+                    <input type="date" id="addEndDate">
+                </div>
+                <div class="add-field">
+                    <label>STATUS</label>
+                    <select id="addStatus">
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="saveAddBtn">SAVE PROMOTION</button>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>EDIT PROMOTION</h3>
+            
+            <input type="hidden" id="editPromoID">
+            
+            <div class="edit-grid">
+                <div class="edit-field">
+                    <label>PROMOTION NAME</label>
+                    <input type="text" id="editPromoName">
+                </div>
+                <div class="edit-field">
+                    <label>DISCOUNT PERCENT (%)</label>
+                    <input type="number" id="editDiscountPercent" step="0.01" min="0" max="100">
+                </div>
+                <div class="edit-field">
+                    <label>START DATE</label>
+                    <input type="date" id="editStartDate">
+                </div>
+                <div class="edit-field">
+                    <label>END DATE</label>
+                    <input type="date" id="editEndDate">
+                </div>
+                <div class="edit-roomField">
+                    <label>STATUS</label>
+                    <select id="editStatus">
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="saveEditBtn">SAVE CHANGES</button>
+        </div>
+    </div>
+
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="../../assets/scripts/promo.js"></script>
 </body>
 </html>

@@ -108,14 +108,6 @@ function loginUser() {
     ]);
 }
 
-function logAudit($email, $action){
-    global $conn;
-
-    $sql = "INSERT INTO login_audit(loginName, action) VALUES ('$email', '$action')";
-
-    $conn -> query($sql);
-}
-
 function logoutUser() {
     session_unset();
     session_destroy();

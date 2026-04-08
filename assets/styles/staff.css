@@ -51,7 +51,10 @@ body {
 }
 
 /* ── RESERVATIONS TABLE ── */
-#reservationsTable, #usersTable {
+#reservationsTable, 
+#usersTable,
+#roomsTable,
+#promotionsTable {
     margin: 0 auto 40px auto;
     width: 95%;
     max-width: 1400px;
@@ -67,7 +70,10 @@ body {
 }
 
 /* Table Header */
-#reservationsTable thead th, #usersTable thead th {
+#reservationsTable thead th, 
+#usersTable thead th,
+#roomsTable thead th,
+#promotionsTable thead th {
     background-color: #b89a6a;
     color: #1a1410;
     font-weight: bold;
@@ -82,18 +88,27 @@ body {
 }
 
 /* Table Rows */
-#reservationsTable tbody tr, #usersTable tbody tr {
+#reservationsTable tbody tr, 
+#usersTable tbody tr,
+#roomsTable tbody tr,
+#promotionsTable thead tr {
     transition: all 0.3s ease;
     border-bottom: 1px solid #b89a6a33;
 }
 
-#reservationsTable tbody tr:hover, #usersTable tbody tr:hover {
+#reservationsTable tbody tr:hover, 
+#usersTable tbody tr:hover,
+#roomsTable tbody tr:hover,
+#promotionsTable tbody tr:hover {
     background-color: #2a211a;
     transform: scale(1.01);
 }
 
 /* Table Cells */
-#reservationsTable td, #usersTable td {
+#reservationsTable td, 
+#usersTable td, 
+#roomsTable td,
+#promotionsTable td {
     padding: 14px 12px;
     text-align: center;
     vertical-align: middle;
@@ -124,19 +139,23 @@ body {
     font-family: 'Times New Roman', Times, serif;
 }
 
-.approveBtn:hover, .completeBtn:hover {
+.approveBtn:hover, 
+.completeBtn:hover {
     background-color: #4a7043;
     border-color: #4a7043;
     color: white;
 }
 
-.cancelBtn:hover, .deleteBtn:hover, .archiveDel:hover {
+.cancelBtn:hover, 
+.deleteBtn:hover, 
+.archiveDel:hover {
     background-color: #8b0000;
     border-color: #8b0000;
     color: white;
 }
 
-.editBtn:hover, .resetBtn:hover {
+.editBtn:hover, 
+.resetBtn:hover {
     background-color: #b89a6a;
     border-color: #b89a6a;
     color: #1a1410;
@@ -147,24 +166,28 @@ body {
 .status-cancelled { color: #8b0000; font-weight: bold; }
 
 @media (max-width: 1200px) {
-    #reservationsTable {
+    #reservationsTable, #usersTable, #roomsTable, #promotionsTable {
         font-size: 13px;
         width: 98%;
     }
     
-    #reservationsTable td, #reservationsTable th {
+    #reservationsTable td, #reservationsTable th, 
+    #usersTable td, #usersTable th, 
+    #roomsTable td,  #roomsTable th,
+    #promotionsTable td, #promotionsTable th {
         padding: 12px 8px;
     }
 }
 
 .table-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     width: 95%;
     max-width: 1400px;
     margin: 40px auto 10px auto;
 }
+
 
 .table-header h2 {
     color: #b89a6a;
@@ -173,9 +196,11 @@ body {
     text-transform: uppercase;
     font-size: 1.2rem;
     margin: 0;
+    justify-content: left;
 }
 
-#switchBtn, #addBtn {
+#switchBtn, 
+#addBtn {
     background-color: transparent;
     color: #f5efe6;
     border: 1px solid #b89a6a;
@@ -186,7 +211,8 @@ body {
     font-family: 'Times New Roman', Times, serif;
 }
 
-#switchBtn:hover, #addBtn:hover {
+#switchBtn:hover, 
+#addBtn:hover {
     background-color: #b89a6a;
     color: #1a1410;
 }
@@ -217,7 +243,9 @@ body {
 }
 
 /* ── EDIT MODAL TITLE ── */
-#editModal h3 {
+#editModal h3, 
+#resetModal h3,
+#addModal h3 {
     color: #b89a6a;
     text-align: center;
     font-size: 1.55rem;
@@ -227,24 +255,31 @@ body {
 }
 
 /* ── GRID ── */
-.edit-grid {
+.edit-grid, 
+.add-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 22px 45px;
     margin-bottom: 25px;
 }
 
-.edit-field {
+.edit-field,
+.add-field {
     display: flex;
     flex-direction: column;
 }
 
-.edit-field.full-width {
+.edit-field.full-width,
+.add-field.full-width {
     grid-column: span 2;
 }
 
 /* ── LABELS ── */
-.edit-field label {
+.edit-field label, 
+.edit-roleField label,
+.add-field label,
+.add-roleField label,
+.edit-roomField label {
     color: #d4b88a;
     font-size: 12.5px;
     letter-spacing: 1px;
@@ -254,7 +289,9 @@ body {
 
 /* ── INPUTS & SELECTS ── */
 .edit-field input,
-.edit-field select {
+.edit-field select,
+.add-field input,
+.add-field select {
     width: 100%;
     height: 44px;
     background-color: #1a1410;
@@ -266,8 +303,37 @@ body {
     border-radius: 3px;
 }
 
+.edit-passField input {
+    width: 100%;
+    height: 44px;
+    background-color: #1a1410;
+    border: 1px solid #b89a6a;
+    color: #f5efe6;
+    font-size: 14px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.edit-roleField select,
+.add-roleField select,
+.edit-roomField select {
+    width: 220%;
+    height: 44px;
+    background-color: #1a1410;
+    border: 1px solid #b89a6a;
+    color: #f5efe6;
+    font-size: 14px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+
 /* ── SAVE BUTTON ── */
-#saveEditBtn {
+#saveEditBtn, 
+#saveResetBtn, 
+#saveAddBtn {
     width: 100%;
     background-color: #b89a6a;
     color: #1a1410;
@@ -282,7 +348,9 @@ body {
     font-weight: bold;
 }
 
-#saveEditBtn:hover {
+#saveEditBtn:hover, 
+#saveResetBtn:hover, 
+#saveAddBtn:hover {
     background-color: #d4b88a;
 }
 

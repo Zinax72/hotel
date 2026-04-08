@@ -38,23 +38,22 @@ function addUser() {
     $lastName = $_POST['lastName'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    $contact = $_POST['contact'] ?? '';   
+    $contact = $_POST['contact'] ?? '';
+    $role = $_POST['role'] ?? 'GUEST';   
 
     //hash password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO users(firstName, lastName, email, password, contactNo, role) 
-    VALUES('$firstName', '$lastName', '$email', '$hashedPassword', '$contact', 'GUEST')";
+    VALUES('$firstName', '$lastName', '$email', '$hashedPassword', '$contact', '$role')";
 
     return $conn->query($sql);
 }
 
-function updatePassword($userID) {
+function updatePassword($userID, $newPassword) {
     global $conn;
 
-    $password = $_POST['newPassword'];
-
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
     $sql = "UPDATE users SET password='$hashedPassword' WHERE userID='$userID'";
     return $conn->query($sql);
@@ -111,5 +110,13 @@ function editUser($userID) {
             WHERE userID = '$userID'";
             
     return $conn->query($sql);
+}
+
+function logAudit($email, $action) {
+    global $conn;
+
+    $sql = "INSERT INTO login_audit(loginName, action) VALUES ('$email', '$action')";
+
+    return $conn -> query($sql);
 }
 ?>

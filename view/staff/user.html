@@ -44,6 +44,45 @@
         <div id="emptyTable"></div>
     </div>
 
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>ADD USER DETAILS</h3>
+            
+            <input type="hidden" id="addUserID">
+            
+            <div class="add-grid">
+                <div class="add-field">
+                    <label>FIRST NAME</label>
+                    <input type="text" id="addFirstName">
+                </div>
+                <div class="add-field">
+                    <label>LAST NAME</label>
+                    <input type="text" id="addLastName">
+                </div>
+                <div class="add-field">
+                    <label>EMAIL</label>
+                    <input type="email" id="addEmail">
+                </div>
+                <div class="add-field">
+                    <label>CONTACT</label>
+                    <input type="tel" id="addContactNo">
+                </div>
+                <div class="add-roleField">
+                    <label>ROLE</label>
+                    <select id="addRole">
+                        <option value="GUEST">GUEST</option>
+                        <option value="RECEPTIONIST">RECEPTIONIST</option>
+                        <option value="MANAGER">MANAGER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="saveAddBtn">SAVE CHANGES</button>
+        </div>
+    </div>
+
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -68,7 +107,7 @@
                     <label>CONTACT</label>
                     <input type="tel" id="editContactNo">
                 </div>
-                <div class="edit-field">
+                <div class="edit-roleField">
                     <label>ROLE</label>
                     <select id="editRole">
                         <option value="GUEST">GUEST</option>
@@ -80,6 +119,22 @@
             </div>
             
             <button id="saveEditBtn">SAVE CHANGES</button>
+        </div>
+    </div>
+
+    <div id="resetModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>UPDATE PASSWORD</h3>
+
+            <input type="hidden" id="passUserID">
+
+            <div class="edit-passGrid">
+                <div class="edit-passField">
+                    <input type="password" id="newPassword">
+                </div>
+            </div>
+            <button id="saveResetBtn">SAVE CHANGES</button>
         </div>
     </div>
 

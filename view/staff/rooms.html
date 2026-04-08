@@ -9,43 +9,103 @@
 <body>
     <div class="sidebar">
         <h2>Hotel Management</h2>
-        
         <a href="dashboard.html" class="menu-item">Dashboard</a>
         <a href="rooms.html" class="managerOnly">Rooms</a>
         <a href="reservations.html" class="managerOnly">Reservations</a>
         <a href="promotions.html" class="managerOnly">Promotions</a>
         <a href="reports.html" class="managerOnly">Reports</a>
         <a href="user.html" class="adminOnly">Manage Users</a>
-        
         <div class="sidebar-bottom">
             <a href="#" id="logoutBtn" class="menu-item logout">LOGOUT</a>
         </div>
     </div>
 
-        <div class="main">
+    <div class="main">
         <div class="table-header">
-            <h2 id="tableName"></h2>
-            <button id="switchBtn"></button>
+            <h2 id="tableName">ROOMS</h2>
+            <button id="addBtn">ADD</button>
         </div>
-        <table id="reservationsTable" border="1">
+        <table id="roomsTable">
             <thead>
                 <tr>
-                    <th>Res ID</th>
-                    <th>Guest</th>
-                    <th>Room</th>
-                    <th>Type</th>
-                    <th>Check In</th>
-                    <th>Check Out</th>
-                    <th>Guests</th>
-                    <th>Pet</th>
-                    <th>Discount</th>
+                    <th>Room ID</th>
+                    <th>Room No</th>
+                    <th>Room Type</th>
+                    <th>Floor</th>
+                    <th>Price Per Night</th>
+                    <th>Max Occupancy</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="reservations"></tbody>
+            <tbody id="rooms"></tbody>
         </table>
         <div id="emptyTable"></div>
     </div>
+
+        <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>EDIT ROOM DETAILS</h3>
+            
+            <input type="hidden" id="editRoomID">
+            
+            <div class="edit-grid">
+                <div class="edit-roomField">
+                    <label>STATUS</label>
+                    <select id="editStatus">
+                        <option value="AVAILABLE">AVAILABLE</option>
+                        <option value="OCCUPIED">OCCUPIED</option>
+                        <option value="MAINTENANCE">MAINTENANCE</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="saveEditBtn">SAVE CHANGES</button>
+        </div>
+    </div>
+
+        <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>ADD ROOM DETAILS</h3>
+            
+            <input type="hidden" id="addRoomID">
+            
+            <div class="add-grid">
+                <div class="add-field">
+                    <label>ROOM NO</label>
+                    <input type="number" id="addRoomNo">
+                </div>
+                <div class="add-field">
+                    <label>ROOM TYPE</label>
+                    <select id="addRoomTypeID">
+                        <option value="1">1 - STANDARD</option>
+                        <option value="2">2 - DELUXE</option>
+                        <option value="3">3 - SUITE</option>
+                        <option value="4">4 - FAMILY</option>
+                        <option value="5">5 - PRESIDENTIAL</option>
+                    </select>
+                </div>
+                <div class="add-field">
+                    <label>FLOOR</label>
+                    <input type="number" id="addFloor">
+                </div>
+                <div class="edit-field">
+                    <label>STATUS</label>
+                    <select id="addStatus">
+                        <option value="AVAILABLE">AVAILABLE</option>
+                        <option value="OCCUPIED">OCCUPIED</option>
+                        <option value="MAINTENANCE">MAINTENANCE</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="saveAddBtn">SAVE CHANGES</button>
+        </div>
+    </div>
+
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="../../assets/scripts/manageRooms.js"></script>
 </body>
 </html>

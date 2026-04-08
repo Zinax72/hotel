@@ -15,15 +15,24 @@ function openSummary(roomID, checkIN, checkOUT, numAdults, numChildren, hasPet, 
         success:function(data){ 
             let d = JSON.parse(data);
 
+
             $("#room").text("ROOM " + d.roomNo + " - " + d.typeName);
             $("#checkINDisplay").text("CHECK IN: " + d.checkIN);
-            $("#checkOUTDispaly").text("CHECK OUT: " + d.checkOUT);
+            $("#checkOUTDisplay").text("CHECK OUT: " + d.checkOUT);
             $("#adultsDisplay").text("ADULTS: " + d.numAdults);
             $("#childrenDisplay").text("CHILDREN: " + d.numChildren);
             $("#petsDisplay").text("PETS: " + (d.hasPet == 1 ? "YES": "NO"));
-            $("#discountDisplay").text("DISCOUNT: " + (d.discountID ? d.discountID : "NONE"));
+            let discountText = "NONE";
+
+            if (d.discountPercent > 0) {
+                discountText = d.promoName 
+                    ? `${d.promoName} (${d.discountPercent}%)` 
+                    : `${d.discountPercent}%`;
+            }
+
+            $("#discountDisplay").text("DISCOUNT: " + discountText);
             $("#pricePerNightDisplay").text("₱" + d.pricePerNight + " / night");
-            $("#totalDisplay").text("Total: ₱" + d.totalPrice + " (" + d.nights + " nights");
+            $("#totalDisplay").text("Total: ₱" + d.totalPrice + " (" + d.nights + " nights)");
 
             $("#roomID").val(d.roomID);
             $("#checkIN").val(d.checkIN);

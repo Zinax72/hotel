@@ -1,35 +1,64 @@
 <?php 
-include"db.php";
+session_start();
+include("../db.php");
+include_once("../model/rooms.php");
 
-function createRooms() {
+if(!isset($_SESSION['userID']) || 
+   !in_array($_SESSION['role'], ['RECEPTIONIST', 'MANAGER', 'ADMIN'])) {
+    echo json_encode([
+        "success" => false,
+        "hint" => "Unauthorized"
+    ]);
+    exit();
+}
 
-    if($_SERVER['REQUEST_METHOD']=='GET') {
-        $roomNo = $_GET['roomNo'];
-        $roomType = $_GET['roomType'];
-        $floor = $_GET['floor'];
+$conn = getConnection($_SESSION['role']);
+$action = isset($_GET['action']) ? $_GET['action'] : 
+          (isset($_POST['action']) ? $_POST['action'] : '');
 
-        i
-    }
+switch($action) {
+    case'addRoom':
+        addRoom();
+        break;
+    case 'getRooms':
+        getAllRooms();
+        break;
+    case 'delRoom':
+        delRoom();
+        break;
+    case 'updateRoom':
+        updateStatus();
+        break;
+    case 'getRoomStatus':
+        getRoomDetail();
+        break;
+}
+
+function getRoomDetail() {
+    global $conn;
+
+    $roomID = $_GET['roomID'];
+    $data = getRoomDetails($roomID);
+    echo json_encode($data);
+}
+
+function updateStatus() {
+    global $conn;
+
+    $roomID = $_POST['roomID'];
+    $data = updateRoom($roomID);
+    echo json_encode([
+        "success" => $data
+    ]);
+}
+
+function delRoom() {
+    global $conn;
+
+    $roomID = $_POST['roomID'];
+    $success = deleteRoom($roomID);
+    echo json_encode([
+        "success" => $success
+    ]);
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="" method="get">
-        <input type="hidden" name="roomID" id="roomID"> 
-        <label for="roomNo">Room NO</label><br>
-        <input type="text" name="roomNo" id="roomNo"><br>
-    
-        <label for="roomType">Room Type (ID)</label>
-        <input type="text" name="roomTypeID" id="roomTypeID">
-
-        <input type="hidden" name="floor" id="floor">
-    </form>
-</body>
-</html>

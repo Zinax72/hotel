@@ -3,6 +3,7 @@ session_start();
 include("../db.php");
 include("../model/reservations.php");
 include_once("../model/rooms.php");
+include_once("../model/users.php");
 
 if(!isset($_SESSION['userID']) || 
    !in_array($_SESSION['role'], ['RECEPTIONIST', 'MANAGER', 'ADMIN'])) {
@@ -48,7 +49,13 @@ switch($action) {
     case 'deleteArc':
         deleteArc();
         break;
+    case 'addRes':
+        addReservation();
+    case 'getUsers':
+        getAllUsers();
+        break;
 }
+
 
 function approveRes() {
     global $conn;

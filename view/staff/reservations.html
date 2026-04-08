@@ -25,7 +25,10 @@
     <div class="main">
         <div class="table-header">
             <h2 id="tableName"></h2>
-            <button id="switchBtn"></button>
+            <div class="table-buttons">
+                <button id="switchBtn"></button>
+                <button id="addBtn">ADD</button>
+            </div>
         </div>
         <table id="reservationsTable">
             <thead>
@@ -101,7 +104,57 @@
         <button id="saveEditBtn">SAVE CHANGES</button>
     </div>
 </div>
-    
+
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>ADD RESERVATION</h3>
+
+        <div class="add-grid">
+            <div class="add-field">
+                <label>USER</label>
+                <select id="addResUserID"></select>
+            </div>
+            <div class="add-field">
+                <label>ROOM</label>
+                <select id="addResRoomID"></select>
+            </div>
+            <div class="add-field">
+                <label>CHECK IN</label>
+                <input type="date" id="addResCheckIN">
+            </div>
+            <div class="add-field">
+                <label>CHECK OUT</label>
+                <input type="date" id="addResCheckOUT">
+            </div>
+            <div class="add-field">
+                <label>ADULTS</label>
+                <input type="number" id="addResAdults" min="1" value="1">
+            </div>
+            <div class="add-field">
+                <label>CHILDREN</label>
+                <input type="number" id="addResChildren" min="0" value="0">
+            </div>
+            <div class="edit-field">
+                <label>PET</label>
+                <select id="editHasPet">
+                    <option value="0">NO</option>
+                    <option value="1">YES</option>
+                </select>
+            </div>
+            <div class="add-field">
+                <label>DISCOUNT</label>
+                <select id="addResDiscount">
+                    <option value="">NONE</option>
+                    <option value="1">PWD</option>
+                    <option value="2">SENIOR CITIZEN</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="saveAddBtn">SAVE</button>
+    </div>
+</div>
     <script src="../../assets/scripts/jq.js"></script>
     <script src="../../assets/scripts/reservations.js"></script>
 </body>

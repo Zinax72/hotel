@@ -51,17 +51,18 @@ function getReservationByUser($search) {
     echo json_encode($data);
 }
 
-function addReservation($userID) {
+function addReservation() {
     global $conn;
 
-    $roomID = $_GET['roomID'] ?? '';
-    $checkIN = $_GET['checkIN'] ?? '';
-    $checkOUT = $_GET['checkOUT'] ?? '';
-    $numAdults = $_GET['numAdults'] ?? 1;
-    $numChildren = $_GET['numChildren'] ?? 0;
+    $userID = $_POST['userID'] ?? '';
+    $roomID = $_POST['roomID'] ?? '';
+    $checkIN = $_POST['checkIN'] ?? '';
+    $checkOUT = $_POST['checkOUT'] ?? '';
+    $numAdults = $_POST['numAdults'] ?? 1;
+    $numChildren = $_POST['numChildren'] ?? 0;
     $totalGuests = $numAdults + $numChildren;
-    $hasPet = $_GET['hasPet'] ?? 0;        
-    $discountID = !empty($_GET['discountID']) ? $_GET['discountID'] : NULL;
+    $hasPet = $_POST['hasPet'] ?? 0;        
+    $discountID = !empty($_POST['discountID']) ? $_POST['discountID'] : NULL;
     
     if ($discountID) {
         $discountVal = "'$discountID'";
@@ -159,5 +160,25 @@ function getAllArchive() {
     }
 
     echo json_encode($data);
+}
+
+function getBestActivePromotion($checkIN, $checkOUT) {
+    global $conn;
+
+    $sql = "SELECT promoID, promoName, discountPercent 
+            FROM promotions 
+            WHERE status = 'ACTIVE' 
+              AND startDate <= '$checkIN' 
+              AND endDate >= '$checkOUT' 
+            ORDER BY discountPercent DESC 
+            LIMIT 1";
+
+    $result = $conn->query($sql);
+
+    if ($result && $row = $result->fetch_assoc()) {
+        return $row;
+    }
+
+    return null;
 }
 ?>

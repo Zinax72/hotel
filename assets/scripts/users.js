@@ -153,3 +153,84 @@ $(document).on("click", ".deleteBtn", function() {
         }
     })
 });
+
+$(document).on("click", ".resetBtn", function(){
+    let userID = $(this).data("id");
+    $("#passUserID").val(userID);
+    $("#resetModal").css("display", "flex");
+});
+
+$(document).on("click", "#resetModal .close", function(){
+    $("#resetModal").fadeOut(150);
+});
+
+$(document).on("click", "#saveResetBtn", function() {
+    let userID = $("#passUserID").val();
+    let newPassword = $("#newPassword").val();
+
+    $.ajax({
+        url:"../../controller/manageUsers.php",
+        type:"POST",
+        data:{
+            action:"resetPass",
+            userID:userID,
+            newPassword:newPassword
+        },
+        success:function(data) {
+            let d = JSON.parse(data);
+
+            if(d.success) {
+                alert("Reset successful");
+                $("#resetModal").fadeOut(150);
+                $("#users").empty();
+                loadUsers();
+            } else {
+                alert(d.hint);
+            }
+        }
+    });
+});
+
+
+$(document).on("click", "#addBtn", function() {
+    $("#addModal").css("display", "flex");
+});
+
+$(document).on("click", "#addModal .close", function(){
+    $("#addModal").fadeOut(150);
+});
+
+$(document).on("click", "#saveAddBtn", function(){
+    let userID = $("#addUserID").val();
+    let firstName = $("#addFirstName").val();
+    let lastName = $("#addLastName").val();
+    let email = $("#addEmail").val();
+    let contactNo = $("#addContactNo").val();
+    let role = $("#addRole").val();  
+    
+    $.ajax({
+        url:"../../controller/manageUsers.php",
+        type:"POST",
+        data:{
+            action:"addUsers",
+            userID:userID,
+            firstName:firstName,
+            lastName:lastName,
+            email:email,
+            contactNo:contactNo,
+            role:role
+        },
+        success:function(data) {
+            let d = JSON.parse(data);
+
+            if(d.success) {
+                alert("User added");
+                $("#addModal").fadeOut(150);
+                $("#users").empty();
+                loadUsers();
+            } else {
+                alert(d.hint);
+            }
+        }
+    });
+}); 

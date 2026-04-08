@@ -21,29 +21,62 @@ switch($action) {
 function getSummary() {
     global $conn;
 
-    $roomID = $_GET['roomID'];
-    $checkIN = isset($_GET['checkIN']) ? $_GET['checkIN'] : '';
-    $checkOUT = isset($_GET['checkOUT']) ? $_GET['checkOUT'] : '';
-    $numAdults = isset($_GET['numAdults']) ? $_GET['numAdults'] : 1;
-    $numChildren = isset($_GET['numChildren']) ? $_GET['numChildren'] : 0;
-    $hasPet = isset($_GET['hasPet']) ? $_GET['hasPet'] : 0;
-    $discountID = isset($_GET['discountID']) ? $_GET['discountID'] : '';
+    $roomID      = $_GET['roomID'];
+    $checkIN     = $_GET['checkIN'] ?? '';
+    $checkOUT    = $_GET['checkOUT'] ?? '';
+    $numAdults   = (int)($_GET['numAdults'] ?? 1);
+    $numChildren = (int)($_GET['numChildren'] ?? 0);
+    $hasPet      = (int)($_GET['hasPet'] ?? 0);
+    $manualDiscountID = $_GET['discountID'] ?? '';
 
     $row = getRoomDetails($roomID);
 
+    if (!$row) {
+        echo json_encode(["success" => false, "hint" => "Room not found"]);
+        return;
+    }
+
+    // date calculation
     $date1 = new DateTime($checkIN);
     $date2 = new DateTime($checkOUT);
     $nights = $date1->diff($date2)->days;
+    if ($nights <= 0) $nights = 1;
 
-    $totalPrice = $nights * $row['pricePerNight'];
+    $basePrice = $nights * $row['pricePerNight'];
+    $extraAdultFee = 800;
+    $extraAdults = max(0, $numAdults - 2);
+    $extraAdultCharge = $extraAdults * $extraAdultFee * $nights;
 
-    if($hasPet) {
-        $totalPrice += $totalPrice * 0.05;
+    $totalPrice = $basePrice + $extraAdultCharge;
+
+    if ($hasPet == 1) {
+        $totalPrice += $basePrice * 0.05;
     }
+
+    // promotion logic
+    $appliedPromoID = null;
+    $appliedDiscountPercent = 0;
+    $promoName = '';
+
+    if (!empty($manualDiscountID)) {
+        $appliedPromoID = $manualDiscountID;
+        $appliedDiscountPercent = 20;
+    } else {
+        $promo = getBestActivePromotion($checkIN, $checkOUT);
         
-    if($discountID) {
-        $totalPrice -= $totalPrice * 0.20;
+        if ($promo) {
+            $appliedPromoID = $promo['promoID'];
+            $appliedDiscountPercent = $promo['discountPercent'];
+            $promoName = $promo['promoName'];   
+        }
     }
+
+    // Apply discount at the very end
+    if ($appliedDiscountPercent > 0) {
+        $totalPrice = $totalPrice * (1 - ($appliedDiscountPercent / 100));
+    }
+
+    $totalPrice = round($totalPrice, 2);
 
     echo json_encode([
         "success" => true,
@@ -54,7 +87,9 @@ function getSummary() {
         "numAdults" => $numAdults,
         "numChildren" => $numChildren,
         "hasPet" => $hasPet,
-        "discountID" => $discountID,
+        "discountID" => $appliedPromoID,
+        "discountPercent" => $appliedDiscountPercent,
+        "promoName" => $promoName,                  
         "pricePerNight" => $row['pricePerNight'],
         "nights" => $nights,
         "totalPrice" => $totalPrice,

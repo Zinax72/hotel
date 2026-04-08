@@ -25,6 +25,7 @@ $("#switchBtn").click(function(){
         showingArchives = true;
         $("#tableName").text("ARCHIVES");
         $("#switchBtn").text("RESERVATIONS");
+        $("#addBtn").hide();
         $("#reservations").empty();
         loadArchives();
     } else {
@@ -32,6 +33,7 @@ $("#switchBtn").click(function(){
         showingArchives = false;
         $("#tableName").text("RESERVATIONS");
         $("#switchBtn").text("ARCHIVES");
+        $("#addBtn").show();
         $("#reservations").empty();
         loadReservations();
     }
@@ -293,7 +295,7 @@ $(document).on("click", ".editBtn", function(){
 
 
 $(document).on("click", "#editModal .close", function(){
-    $("#editModal").fadeOut(200);
+    $("#editModal").fadeOut(150);
 });
 
 $(document).on("click", "#saveEditBtn", function() {
@@ -326,7 +328,7 @@ $(document).on("click", "#saveEditBtn", function() {
 
             if(d.success) {
                 alert("Reservation Updated");
-                $("#editModal").fadeOut(250);
+                $("#editModal").fadeOut(150);
                 $("#reservations").empty();
                 loadReservations();
             } else {
@@ -389,3 +391,71 @@ $(document).on("click", ".archiveDel", function(){
     });
 });
 
+$("#addBtn").click(function(){
+    // load users dropdown
+    $.ajax({
+        url: "../../controller/manageReservations.php",
+        type: "GET",
+        data: { action: "getUsers" },
+        success: function(data) {
+            let users = JSON.parse(data);
+            $("#addResUserID").empty();
+            users.forEach(u => {
+                $("#addResUserID").append(
+                    `<option value="${u.userID}">${u.firstName} ${u.lastName}</option>`
+                );
+            });
+        }
+    });
+
+    // load rooms dropdown
+    $.ajax({
+        url: "../../controller/manageReservations.php",
+        type: "GET",
+        data: { action: "getRooms" },
+        success: function(data) {
+            let rooms = JSON.parse(data);
+            $("#addResRoomID").empty();
+            rooms.forEach(r => {
+                $("#addResRoomID").append(
+                    `<option value="${r.roomID}">${r.roomNo} - ${r.typeName}</option>`
+                );
+            });
+        }
+    });
+
+    $("#addModal").css("display", "flex");
+});
+
+$(document).on("click", "#saveAddBtn", function(){
+    let userID = $("#addResUserID").val();
+    let roomID = $("#addResRoomID").val();
+    let checkIN = $("#addResCheckIN").val();
+    let checkOUT = $("#addResCheckOUT").val();
+    let numAdults = $("#addResAdults").val();
+    let numChildren = $("#addResChildren").val();
+    let hasPet = $("#addResPet").is(":checked") ? 1 : 0;
+    let discountID = $("#addResDiscount").val();
+
+    $.ajax({
+        url: "../../controller/manageReservations.php",
+        type: "POST",
+        data: {
+            action: "addRes",
+            userID: userID,
+            roomID: roomID,
+            checkIN: checkIN,
+            checkOUT: checkOUT,
+            numAdults: numAdults,
+            numChildren: numChildren,
+            hasPet: hasPet,
+            discountID: discountID
+        },
+        success: function(data) {
+            alert("Reservation Added!");
+            $("#addModal").hide();
+            $("#reservations").empty();
+            loadReservations();
+        }
+    });
+});

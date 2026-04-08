@@ -21,7 +21,7 @@ switch ($action) {
         getAllUsers();
         break;
     case 'addUsers':
-        addUsers();
+        addUser();
         break;
     case 'delUser':
         delUser();
@@ -37,9 +37,6 @@ switch ($action) {
         break;
 }
 
-function addUsers() {
-
-}
 
 function getUserDetails() {
     global $conn;
@@ -60,7 +57,14 @@ function updateUser() {
 }
 
 function resetPass() {
+    global $conn;
 
+    $userID = $_POST['userID'];
+    $newPassword = $_POST['newPassword'];
+    $success = updatePassword($userID, $newPassword);
+    echo json_encode([
+        "success" => $success
+    ]);
 }
 
 function delUser() {

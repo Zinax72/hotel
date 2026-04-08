@@ -77,7 +77,7 @@ function getRoomByID($roomID) {
 function addRoom(){
     global $conn;
 
-    $roomNO = isset($_POST['roomNo']) ? $_POST['roomNo'] : '';
+    $roomNo = isset($_POST['roomNo']) ? $_POST['roomNo'] : '';
     $roomTypeID = isset($_POST['roomTypeID']) ? $_POST['roomTypeID'] : '';
     $floor = isset($_POST['floor']) ? $_POST['floor'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : '';
@@ -90,12 +90,9 @@ function addRoom(){
 function updateRoom($roomID) {
     global $conn;
 
-    $roomNO = isset($_POST['roomNo']) ? $_POST['roomNo'] : '';
-    $roomTypeID = isset($_POST['roomTypeID']) ? $_POST['roomTypeID'] : '';
-    $floor = isset($_POST['floor']) ? $_POST['floor'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : '';
 
-    $sql = "UPDATE Rooms SET roomNo='$roomNo', roomTypeID='$roomTypeID', floor='$floor', status='$status' WHERE roomID='$roomID'";
+    $sql = "UPDATE Rooms SET status='$status' WHERE roomID='$roomID'";
 
     return $conn->query($sql);    
 }
@@ -123,7 +120,7 @@ function getRoomsForDropdown() {
         $data[] = $row;
     }
     
-    return $data; // ← ONLY return, no echo!
+    return $data;
 }
 
 ?>
