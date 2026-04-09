@@ -16,6 +16,8 @@ switch($action) {
     case 'confirmBooking':
         confirmBooking();
         break;
+    case 'confirmPayment':
+        confirmPayment();
 }
 
 function getSummary() {
@@ -101,7 +103,7 @@ function getSummary() {
 function confirmBooking() {
     global $conn;
 
-    if(!isset($_SESSION['userID'])) {
+    if(!isset($_SESSION['userID']) || $_SESSION['userID'] == '') {
         echo json_encode([
             "success" => false,
             "hint" => "Please login to confirm your booking."
@@ -109,33 +111,64 @@ function confirmBooking() {
         return;
     }
 
-    $userID = $_SESSION['userID'];
-    $roomID = $_GET['roomID'];
-    $checkIN = $_GET['checkIN'];
-    $checkOUT = $_GET['checkOUT'];
-    $numAdults = $_GET['numAdults'];
-    $numChildren = $_GET['numChildren'];
-    $totalGuests = $numAdults + $numChildren;
-    $hasPet = $_GET['hasPet'];        
-    $discountID = !empty($_GET['discountID']) ? $_GET['discountID'] : NULL;
-    
-    if ($discountID) {
-        $discountVal = "'$discountID'";
-    } else {
-        $discountVal = "NULL";
+    $userID      = $_SESSION['userID'];
+    $resID       = $_GET['resID'] ?? '';
+    $roomID      = $_GET['roomID'] ?? '';
+    $checkIN     = $_GET['checkIN'] ?? '';
+    $checkOUT    = $_GET['checkOUT'] ?? '';
+    $numAdults   = $_GET['numAdults'] ?? 1;
+    $numChildren = $_GET['numChildren'] ?? 0;
+    $totalGuests = (int)$numAdults + (int)$numChildren;
+    $hasPet      = $_GET['hasPet'] ?? 0;
+    $discountID  = !empty($_GET['discountID']) ? $_GET['discountID'] : null;
+
+    // Basic validation
+    if ($roomID == '' || $checkIN == '' || $checkOUT == '') {
+        echo json_encode([
+            "success" => false,
+            "hint" => "Missing required booking information."
+        ]);
+        return;
     }
-    
-    $success = addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests, $numAdults, $numChildren, $hasPet, $discountVal, 'PENDING');
-    
+
+    $success = addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests, 
+                              $numAdults, $numChildren, $hasPet, $discountID);
+
     if($success) {
+        $amount = getReservationTotal($roomID);
         echo json_encode([
             "success" => true,
-            "message" => "Booking confirmed!"
+            "message" => "Booking confirmed successfully!",
+            "resID" => $resID,
+            "totalPrice" => $amount
         ]);
     } else {
         echo json_encode([
             "success" => false,
             "message" => "Booking failed! Please try again."
+        ]);
+    }
+}
+
+function confirmPayment() {
+    $resID = $_POST['resID'] ?? '';
+    $payMethod = $_POST['payMethod'] ?? 'CASH';
+
+    $amount = getReservationTotal($resID);
+
+    $paymentSuccess = addPayment($resID, $amount, $payMethod);
+
+    if($paymentSuccess) {
+        updateResAfterPayment($resID);
+
+        echo json_encode([
+            "success" => true,
+            "message" => "Payment recorded successfully"
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to record payment. Try again later."
         ]);
     }
 }

@@ -119,12 +119,12 @@ function logoutUser() {
 function forgotPass() {
     global $conn;
 
-    $userID = $_POST['userID'];
+    $email = $_POST['email'];
     $oldPassword = $_POST['oldPassword'];
     $newPassword = $_POST['newPassword'];
     $confirmNewPass = $_POST['confirmNewPassword'];
 
-    $user = getUserByID($userID);
+    $user = getUserByEmail($email);
 
     if(!$user || !password_verify($oldPassword, $user['password'])) {
         echo json_encode([
@@ -152,7 +152,7 @@ function forgotPass() {
         return;
     }
 
-    if(updatePassword($userID)) {
+    if(updatePassword($email, $newPassword)) {
         echo json_encode([
             "success" => true,
             "role" => $_SESSION['role']

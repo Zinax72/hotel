@@ -106,7 +106,6 @@ $(function() {
     });
 
     $("#modalSumm").load("../../view/guest/summary.html", function(){
-
         $("#confirmModal").appendTo("body");
         $(document).on("click", "#confirmBtn", function(){
             $.ajax({
@@ -127,7 +126,11 @@ $(function() {
 
                     if (d.success) {
                         $("#summaryModal").hide();
-                        $("#confirmModal").show();
+                        
+                        let resID = d.resID || $("#roomID").val();
+                        let totalAmount = d.totalPrice || 0
+
+                        showPaymentModal(resID, totalAmount);
 
                         // reset hidden inputs
                         $("#roomID").val('');
@@ -148,6 +151,8 @@ $(function() {
                         $("#discountDisplay").text('');
                         $("#pricePerNightDisplay").text('');
                         $("#totalDisplay").text('');
+                    } else {
+                        alert(d.hint);
                     }
                 }
             });
@@ -236,3 +241,61 @@ $(document).on("click", ".bookNowBtn", function(){
 
     openSummary(roomID, checkIN, checkOUT, numAdults, numChildren, hasPet, discountID);
 });
+
+function showPaymentModal(resID, totalAmount) {
+    $("#paymentResID").val(resID);
+    $("#paymentAmount").text("₱" + totalAmount);
+    $("#payMethod").val("CASH");
+    $("#cardDetailsForm").hide();
+    $("#cardNumber, #cardName, #cardExpiry, #cardCVV").val('');
+    $("#paymentModal").css("display", "flex");
+}
+
+$(document).on("click", "#paymentModal .close", function() {
+    $("#paymentModal").fadeOut(150);
+});
+
+$(document).on("change", "#payMethod", function() {
+    if($(this).val() == "CARD") {
+        $("#cardDetailsForm").slideDown(200);
+    } else {
+        $("#cardDetailsForm").slideUP(200);
+    }
+});     
+
+$(document).on("click", "#confirmPaymentBtn", function() {
+    let resID = $("#paymentResID").val();
+    let payMethod = $("#payMethod").val();
+
+    if(payMethod == "CARD") {
+        let cardNumber = $("#cardNumber").val().trim();
+        let cardName = $("#cardName").val().trim();
+
+        if(cardNumber == '' || cardName == '') {
+            alert("Please fill in all card details");
+            return;
+        }
+    }
+
+    $.ajax({
+        url:"../../controller/booking.php",
+        type:"POST",
+        data:{
+            action:"confirmPayment",
+            resID:resID,
+            payMethod:payMethod
+        },
+        success:function(data) {
+            let d = JSON.parse(data);
+
+            if(d.success) {
+                alert("Payment Successful! Thank you");
+                $("#paymentModal").fadeOut(150);
+                $("#summaryModal").fadeOut(150);
+            } else {
+                alert(d.hint);
+            }
+        }
+    });
+});
+

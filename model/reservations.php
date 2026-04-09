@@ -51,27 +51,20 @@ function getReservationByUser($search) {
     echo json_encode($data);
 }
 
-function addReservation() {
+function addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests, 
+                        $numAdults, $numChildren, $hasPet, $discountID) {
     global $conn;
 
-    $userID = $_POST['userID'] ?? '';
-    $roomID = $_POST['roomID'] ?? '';
-    $checkIN = $_POST['checkIN'] ?? '';
-    $checkOUT = $_POST['checkOUT'] ?? '';
-    $numAdults = $_POST['numAdults'] ?? 1;
-    $numChildren = $_POST['numChildren'] ?? 0;
-    $totalGuests = $numAdults + $numChildren;
-    $hasPet = $_POST['hasPet'] ?? 0;        
-    $discountID = !empty($_POST['discountID']) ? $_POST['discountID'] : NULL;
-    
-    if ($discountID) {
+    if ($discountID !== null && $discountID !== '') {
         $discountVal = "'$discountID'";
     } else {
         $discountVal = "NULL";
     }
 
-    $sql = "INSERT INTO reservations(userID, roomID, checkIN, checkOut, guestsNum, numAdults, numChildren, hasPet, discountID, status) 
-            VALUES ('$userID','$roomID', '$checkIN', '$checkOUT', '$totalGuests', '$numAdults', '$numChildren', '$hasPet', $discountVal, 'PENDING')";
+    $sql = "INSERT INTO reservations 
+            (userID, roomID, checkIN, checkOut, guestsNum, numAdults, numChildren, hasPet, discountID, status) 
+            VALUES 
+            ('$userID', '$roomID', '$checkIN', '$checkOUT', '$totalGuests', '$numAdults', '$numChildren', '$hasPet', $discountVal, 'PENDING')";
 
     return $conn->query($sql);
 }
@@ -175,10 +168,35 @@ function getBestActivePromotion($checkIN, $checkOUT) {
 
     $result = $conn->query($sql);
 
-    if ($result && $row = $result->fetch_assoc()) {
-        return $row;
-    }
+    return $result->fetch_assoc();
+}
 
-    return null;
+function addPayment($resID, $amount, $payMethod) {
+    global $conn;
+
+    $resID = $resID;
+    $payMethod = $payMethod;
+
+    $sql = "INSERT INTO payments (resID, amount, payMethod, payStatus)
+    VALUES('$resiD', '$amount', '$payMethod', 'PAID')";
+
+    return $conn->query($sql);
+}
+
+function updateResAfterPayment($resID) {
+    global $conn;
+
+    $sql = "UPDATE reservations SET status = 'CONFIRMED' WHERE resID='$resID'";
+
+    return $conn->query($sql);
+}
+
+function getReservationTotal($resID) {
+    global $conn;
+
+    $sql = "SELECT totalPrice FROM reservations WHERE resID='$resID'";
+    $result = $conn->query($sql);
+
+    return $result->fetch_assoc();
 }
 ?>
