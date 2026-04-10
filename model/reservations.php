@@ -52,7 +52,7 @@ function getReservationByUser($search) {
 }
 
 function addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests, 
-                        $numAdults, $numChildren, $hasPet, $discountID) {
+                        $numAdults, $numChildren, $hasPet, $discountID, $totalPrice) {
     global $conn;
 
     if ($discountID !== null && $discountID !== '') {
@@ -62,11 +62,12 @@ function addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests,
     }
 
     $sql = "INSERT INTO reservations 
-            (userID, roomID, checkIN, checkOut, guestsNum, numAdults, numChildren, hasPet, discountID, status) 
+            (userID, roomID, checkIN, checkOut, guestsNum, numAdults, numChildren, hasPet, discountID, totalPrice, status) 
             VALUES 
-            ('$userID', '$roomID', '$checkIN', '$checkOUT', '$totalGuests', '$numAdults', '$numChildren', '$hasPet', $discountVal, 'PENDING')";
+            ('$userID', '$roomID', '$checkIN', '$checkOUT', '$totalGuests', '$numAdults', '$numChildren', '$hasPet', $discountVal, '$totalPrice', 'PENDING')";
 
-    return $conn->query($sql);
+    $conn->query($sql);
+    return $conn->insert_id;
 }
 
 function updateReservationStatus($resID, $status){
@@ -178,7 +179,7 @@ function addPayment($resID, $amount, $payMethod) {
     $payMethod = $payMethod;
 
     $sql = "INSERT INTO payments (resID, amount, payMethod, payStatus)
-    VALUES('$resiD', '$amount', '$payMethod', 'PAID')";
+    VALUES('$resID', '$amount', '$payMethod', 'PAID')";
 
     return $conn->query($sql);
 }

@@ -1,13 +1,14 @@
 <?php 
 session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 include "../db.php";
 include "../model/reservations.php";
 include "../model/rooms.php";
 
 $conn = getConnection($_SESSION['role'] ?? 'GUEST');
-
-$action = isset($_GET['action']) ? $_GET['action'] : '';
-
+$action = isset($_GET['action']) ? $_GET['action'] : 
+          (isset($_POST['action']) ? $_POST['action'] : '');
 
 switch($action) {
     case 'getSummary':
@@ -112,7 +113,6 @@ function confirmBooking() {
     }
 
     $userID      = $_SESSION['userID'];
-    $resID       = $_GET['resID'] ?? '';
     $roomID      = $_GET['roomID'] ?? '';
     $checkIN     = $_GET['checkIN'] ?? '';
     $checkOUT    = $_GET['checkOUT'] ?? '';
@@ -131,16 +131,38 @@ function confirmBooking() {
         return;
     }
 
-    $success = addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests, 
-                              $numAdults, $numChildren, $hasPet, $discountID);
+    // recalculate total price
+    $row = getRoomDetails($roomID);
+    $date1 = new DateTime($checkIN);
+    $date2 = new DateTime($checkOUT);
+    $nights = $date1->diff($date2)->days;
+    if ($nights <= 0) $nights = 1;
 
-    if($success) {
-        $amount = getReservationTotal($roomID);
+    $basePrice = $nights * $row['pricePerNight'];
+    $extraAdults = max(0, (int)$numAdults - 2);
+    $extraAdultCharge = $extraAdults * 800 * $nights;
+    $totalPrice = $basePrice + $extraAdultCharge;
+
+    if ($hasPet == 1) {
+        $totalPrice += $basePrice * 0.05;
+    }
+
+    if (!empty($discountID)) {
+        $totalPrice = $totalPrice * 0.80;
+    }
+
+    $totalPrice = round($totalPrice, 2);
+
+    $resID = addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests,
+                            $numAdults, $numChildren, $hasPet, $discountID, $totalPrice);
+
+    if ($resID) {
+
         echo json_encode([
             "success" => true,
             "message" => "Booking confirmed successfully!",
             "resID" => $resID,
-            "totalPrice" => $amount
+            "totalPrice" => $totalPrice
         ]);
     } else {
         echo json_encode([
@@ -151,10 +173,13 @@ function confirmBooking() {
 }
 
 function confirmPayment() {
+    global $conn;
+    
     $resID = $_POST['resID'] ?? '';
     $payMethod = $_POST['payMethod'] ?? 'CASH';
 
-    $amount = getReservationTotal($resID);
+    $row = getReservationTotal($resID);
+    $amount = $row['totalPrice'];
 
     $paymentSuccess = addPayment($resID, $amount, $payMethod);
 
@@ -168,7 +193,7 @@ function confirmPayment() {
     } else {
         echo json_encode([
             "success" => false,
-            "message" => "Failed to record payment. Try again later."
+            "hint" => "Failed to record payment. Try again later."
         ]);
     }
 }

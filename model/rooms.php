@@ -2,28 +2,36 @@
 include("../db.php");
 
 function getAvailableRooms() {
-    global $conn;
+    $conn = getConnection('ADMIN');
+
 
     $guests = isset($_GET['guests']) ? $_GET['guests'] : 1;
     $checkOUT = isset($_GET['checkOUT']) ? $_GET['checkOUT'] : '';
     $checkIN = isset($_GET['checkIN']) ? $_GET['checkIN'] : '';
 
-    $data = [];
-    $sql = "SELECT Rooms.*, RoomTypes.typeName, RoomTypes.pricePerNight, RoomTypes.maxOccupancy
-    FROM Rooms
-    JOIN RoomTypes ON Rooms.roomTypeID = RoomTypes.typeID
-    WHERE Rooms.status = 'AVAILABLE'
-    AND RoomTypes.maxOccupancy >= $guests
-    AND Rooms.roomID NOT IN (
-        SELECT roomID FROM Reservations
+    $sql = "SELECT rooms.*, roomtypes.typeName, roomtypes.pricePerNight, roomtypes.maxOccupancy
+    FROM rooms
+    JOIN roomtypes ON rooms.roomTypeID = roomtypes.typeID
+    WHERE rooms.status = 'AVAILABLE'
+    AND roomtypes.maxOccupancy >= $guests
+    AND rooms.roomID NOT IN (
+        SELECT roomID FROM reservations
         WHERE status IN ('PENDING', 'CONFIRMED')
-        AND checkIN < '$checkOUT'
-        AND checkOUT > '$checkIN'
-    )"; 
+        AND checkIn != '0000-00-00'
+        AND checkOut != '0000-00-00'
+        AND checkIn < '$checkOUT'
+        AND checkOut > '$checkIN'
+    )";
 
-    $result = $conn->query($sql);    
+    $result = $conn->query($sql);
 
-    while ($row = $result->fetch_assoc()){
+    if (!$result) {
+        echo json_encode(["error" => $conn->error, "sql" => $sql]);
+        return;
+    }
+
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
 

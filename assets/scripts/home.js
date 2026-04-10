@@ -259,7 +259,7 @@ $(document).on("change", "#payMethod", function() {
     if($(this).val() == "CARD") {
         $("#cardDetailsForm").slideDown(200);
     } else {
-        $("#cardDetailsForm").slideUP(200);
+        $("#cardDetailsForm").slideUp(200);
     }
 });     
 
