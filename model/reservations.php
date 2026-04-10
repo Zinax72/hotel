@@ -32,48 +32,47 @@ function getReservationByID($resID) {
     return $result->fetch_assoc();
 }
 
-function getReservationByUser($search) {
+function getReservationByUser($userID) {
     global $conn;
 
     $data = [];
-
-    $sql = "SELECT res.*, u.firstName, u.lastName, u.email 
-    FROM reservations res
-    JOIN users u ON res.userID = u.userID
-    WHERE u.lastName LIKE '%$search%' 
-    OR u.firstName LIKE '%$search%'";
+    $sql = "SELECT res.*, u.firstName, u.lastName, u.userID, u.email, r.roomNo, rt.typeName, d.discountType
+        from reservations res
+        join users u ON res.userID = u.userID
+        join rooms r ON res.roomID = r.roomID
+        join roomtypes rt ON r.roomTypeID = rt.typeID
+        left join discount d ON res.discountID = d.discountID
+        WHERE u.userID = '$userID'
+        ORDER BY
+            FIELD(res.status, 'PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'),
+            res.createdAt DESC";
 
     $result = $conn->query($sql);
 
-    while ($row = $result->fetch_assoc()){
+    while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
-    echo json_encode($data);
+
+    return $data;
 }
 
-function addReservation() {
+function addReservation($userID, $roomID, $checkIN, $checkOUT, $totalGuests, 
+                        $numAdults, $numChildren, $hasPet, $discountID, $totalPrice) {
     global $conn;
 
-    $userID = $_POST['userID'] ?? '';
-    $roomID = $_POST['roomID'] ?? '';
-    $checkIN = $_POST['checkIN'] ?? '';
-    $checkOUT = $_POST['checkOUT'] ?? '';
-    $numAdults = $_POST['numAdults'] ?? 1;
-    $numChildren = $_POST['numChildren'] ?? 0;
-    $totalGuests = $numAdults + $numChildren;
-    $hasPet = $_POST['hasPet'] ?? 0;        
-    $discountID = !empty($_POST['discountID']) ? $_POST['discountID'] : NULL;
-    
-    if ($discountID) {
+    if ($discountID !== null && $discountID !== '') {
         $discountVal = "'$discountID'";
     } else {
         $discountVal = "NULL";
     }
 
-    $sql = "INSERT INTO reservations(userID, roomID, checkIN, checkOut, guestsNum, numAdults, numChildren, hasPet, discountID, status) 
-            VALUES ('$userID','$roomID', '$checkIN', '$checkOUT', '$totalGuests', '$numAdults', '$numChildren', '$hasPet', $discountVal, 'PENDING')";
+    $sql = "INSERT INTO reservations 
+            (userID, roomID, checkIN, checkOut, guestsNum, numAdults, numChildren, hasPet, discountID, totalPrice, status) 
+            VALUES 
+            ('$userID', '$roomID', '$checkIN', '$checkOUT', '$totalGuests', '$numAdults', '$numChildren', '$hasPet', $discountVal, '$totalPrice', 'PENDING')";
 
-    return $conn->query($sql);
+    $conn->query($sql);
+    return $conn->insert_id;
 }
 
 function updateReservationStatus($resID, $status){
@@ -175,10 +174,34 @@ function getBestActivePromotion($checkIN, $checkOUT) {
 
     $result = $conn->query($sql);
 
-    if ($result && $row = $result->fetch_assoc()) {
-        return $row;
-    }
+    return $result->fetch_assoc();
+}
 
-    return null;
+function updateResAfterPayment($resID) {
+    global $conn;
+
+    $sql = "UPDATE reservations SET status = 'CONFIRMED' WHERE resID='$resID'";
+
+    return $conn->query($sql);
+}
+
+function getReservationTotal($resID) {
+    global $conn;
+
+    $sql = "SELECT totalPrice FROM reservations WHERE resID='$resID'";
+    $result = $conn->query($sql);
+
+    return $result->fetch_assoc();
+}
+
+function cancelMyBooking($resID, $userID) {
+    global $conn;
+
+    $sql = "UPDATE reservations 
+            SET status = 'CANCELLED' 
+            WHERE resID = '$resID' AND userID = '$userID' AND status = 'PENDING'";
+
+    $conn->query($sql);
+    return $conn->affected_rows > 0;
 }
 ?>

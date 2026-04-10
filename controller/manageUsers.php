@@ -4,7 +4,7 @@ include("../db.php");
 include_once("../model/users.php");
 
 if(!isset($_SESSION['userID']) || 
-   !in_array($_SESSION['role'], ['RECEPTIONIST', 'MANAGER', 'ADMIN'])) {
+   !in_array($_SESSION['role'], ['ADMIN'])) {
     echo json_encode([
         "success" => false,
         "hint" => "Unauthorized"

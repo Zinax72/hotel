@@ -7,25 +7,33 @@
     <link rel="stylesheet" href="../../assets/styles/guest.css">
 </head>
 <body>
-    <div class="head">
-        <div class="navbar">
-            <div class="nav-left">
-                <a class="nav-brand" href="home.html">JABUBU</a>
-                <ul>
-                    <li class="menu11"><a href="home.html">Home</a></li>
-                    <li class="menu11"><a href="amenities.html">Amenities</a></li>
-                    <li class="menu11"><a href="rooms.html">Rooms</a></li>
-                </ul>
-            </div>
-            <div class="nav-right">
-                    <ul id="navUsername"></ul>                       
-                    <button id="loginBtn">LOGIN</button> 
-                    <button id="logoutBtn" style="display:none">LOGOUT</button>      
-            </div>
+    <div class="navbar">
+        <div class="nav-left">
+            <a class="nav-brand" href="home.html">JABUBU</a>
+            <ul>
+                <li class="menu11"><a href="home.html">Home</a></li>
+                <li class="menu11"><a href="amenities.html">Amenities</a></li>
+                <li class="menu11"><a href="rooms.html">Rooms</a></li>
+            </ul>
         </div>
+        <div class="nav-right">
+                <ul id="navUsername"></ul>                       
+                <button id="loginBtn">LOGIN</button> 
+                <button id="burgerBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div id="burgerMenu">
+                    <a href="settings.html">Settings</a>
+                    <a href="#" id="logoutBtn">Logout</a>
+                </div>
+        </div>
+    </div>
 
         <div class="room">
-            <img src="../../assets/img/655720437_2081141242708291_3722088565615923606_n.jpg" alt="Thishotel">
+            <img src="../../assets/img/guest.jpg" alt="Thishotel">
         </div>
 
         <form id="searchForm" class="searchForm" method="GET">
@@ -99,6 +107,50 @@
             </div>
 
             <button type="button" id="doneBtn">Done</button>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Payment</h3>
+
+            <input type="hidden" id="paymentResID">
+
+            <div class="summary">
+                <p><strong>Total Amount:</strong> <span id="paymentAmount"></span></p>
+            </div>
+
+            <div id="payment-options">
+                <label>Payment Method</label>
+                <select id="payMethod">
+                    <option value="CASH">CASH</option>
+                    <option value="CARD">CARD</option>
+                </select>
+            </div>
+
+            <div id="cardDetailsForm" class="card-form" style="display:none;">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>CARD NUMBER</label>
+                        <input type="text" id="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="form-field">
+                        <label>CARDHOLDER NAME</label>
+                        <input type="text" id="cardName" placeholder="Jabo Dimla">
+                    </div>
+                    <div class="form-field">
+                        <label>EXPIRY DATE</label>
+                        <input type="text" id="cardExpiry" maxlength="5" placeholder="MM/YY">
+                    </div>
+                    <div class="form-field">
+                        <label>CVV</label>
+                        <input type="text" id="cardCVV" maxlength="4" placeholder="1234">
+                    </div>
+                </div>
+            </div>
+
+            <button id="confirmPaymentBtn">CONFIRM PAYMENT</button>
         </div>
     </div>
 

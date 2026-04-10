@@ -7,9 +7,22 @@ $.ajax({
             $(".managerOnly").hide();
             $(".adminOnly").hide();
         } else if (data.role == "MANAGER") {
-            $(".adminonly").hide();
+            $(".adminOnly").hide();
         }
     }
+});
+
+$("#logoutBtn").click(function(){
+    $.ajax({
+        url:"../../controller/authControl.php",
+        type:"POST",
+        data:{
+            action:"logoutUser"
+        },
+        success:function(data) {
+            window.location.href = "../login.html"
+        }
+    })
 });
 
 let showingArchives = false;
@@ -49,7 +62,7 @@ function loadReservations() {
         success:function(data){
             let res = JSON.parse(data);
             if(res.length == 0) {
-                $("#emptyTable").html('<p>No reservations found.</p>');
+                $("#reservations").append('<tr><td colspan="11">NO DATA AVAILABLE</td></tr>');
                 return;
             }
 
@@ -150,19 +163,6 @@ function loadArchives() {
     });
 }
 
-$("#logoutBtn").click(function(){
-    $.ajax({
-        url:"../../controller/authControl.php",
-        type:"POST",
-        data:{
-            action:"logoutUser"
-        },
-        success:function(data) {
-            window.location.href = "../login.html"
-        }
-    })
-});
-
 $("#archivesBtn").click(function(){
     $.ajax({
         url:"../../controller/manageReservations.php",
@@ -175,6 +175,10 @@ $("#archivesBtn").click(function(){
             loadArchives();
         }
     })
+});
+
+$(document).on("click", "#addModal .close", function(){
+    $("#addModal").fadeOut(150);
 });
 
 $(document).on("click", ".approveBtn", function(){

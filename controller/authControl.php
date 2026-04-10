@@ -99,6 +99,7 @@ function loginUser() {
     $_SESSION['role'] = $user['role'];
     $_SESSION['email'] = $user['email'];
     $_SESSION['firstName'] = $user['firstName'];
+    $_SESSION['lastName'] = $user['lastName'];
 
     logAudit($user['email'], 'LOGIN');  
 
@@ -119,20 +120,11 @@ function logoutUser() {
 function forgotPass() {
     global $conn;
 
-    $userID = $_POST['userID'];
-    $oldPassword = $_POST['oldPassword'];
+    $email = $_POST['email'];
     $newPassword = $_POST['newPassword'];
     $confirmNewPass = $_POST['confirmNewPassword'];
 
-    $user = getUserByID($userID);
-
-    if(!$user || !password_verify($oldPassword, $user['password'])) {
-        echo json_encode([
-            "success" => false,
-            "hint" => "Old password is incorrect."
-        ]);
-        return;
-    }
+    $user = getUserByEmail($email);
 
     // if passwords do not match
     if ($newPassword !== $confirmNewPass) {
@@ -152,10 +144,9 @@ function forgotPass() {
         return;
     }
 
-    if(updatePassword($userID)) {
+    if(updatePassword($email, $newPassword)) {
         echo json_encode([
-            "success" => true,
-            "role" => $_SESSION['role']
+            "success" => true
         ]);
     } else {
         echo json_encode([

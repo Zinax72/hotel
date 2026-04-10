@@ -1,3 +1,12 @@
+function closeAllModals() {
+    $(".modal").hide();
+}
+
+function openModal(modalID) {
+    closeAllModals();
+    $(modalID).fadeIn(150);
+}
+
 $(function(){
     loadRooms();
 
@@ -28,11 +37,11 @@ $(function(){
     });
 
     $(".close").click(function(){
-        $("#myModal").hide();
+        $("#myModal").fadeOut(150);
     })
 
     // done button
-    $("#doneBtn").click(function(){
+    $(document).on("click", "#doneBtn", function(){
         let roomID = $("#selectedRoomID").val();
         let checkIN = $("#modalCheckIN").val();
         let checkOUT = $("#modalCheckOUT").val();
@@ -41,21 +50,98 @@ $(function(){
         let pet = $("#petCheck").is(":checked") ? 1 : 0;
         let discount = $("input[name='discount']:checked").val();
 
-        window.location.href = `/final/controller/booking.php?roomID=${roomID}&checkIN=${checkIN}&checkOUT=${checkOUT}&numAdults=${adults}&numChildren=${children}&hasPet=${pet}&discountID=${discount}`;
+        openModal("#summaryModal"); 
+        openSummary(roomID, checkIN, checkOUT, adults, children, pet, discount);
+    });
+
+    $("#modalSumm").load("../../view/guest/summary.html", function(){
+
+        $("#confirmModal").appendTo("body");
+        $(document).on("click", "#confirmBtn", function(){
+            $.ajax({
+                url:"../../controller/booking.php",
+                type:"GET",
+                data:{
+                    action:"confirmBooking",
+                    roomID: $("#roomID").val(),
+                    checkIN: $("#checkIN").val(),
+                    checkOUT: $("#checkOUT").val(),
+                    numAdults: $("#numAdults").val(),
+                    numChildren: $("#numChildren").val(),
+                    hasPet: $("#hasPet").val(),
+                    discountID: $("#discountID").val()
+                },
+                success:function(data) {
+                    let d = JSON.parse(data);
+
+                    if (d.success) {
+                        openModal("#confirmModal"); 
+
+                        resetBookingForm(); 
+
+                        // reset hidden inputs
+                        $("#roomID").val('');
+                        $("#checkIN").val('');
+                        $("#checkOUT").val('');
+                        $("#numAdults").val('');
+                        $("#numChildren").val('');
+                        $("#hasPet").val('');
+                        $("#discountID").val('');
+
+                        // reset summary display
+                        $("#room").text('');
+                        $("#checkINDisplay").text('');
+                        $("#checkOUTDisplay").text('');
+                        $("#adultsDisplay").text('');
+                        $("#childrenDisplay").text('');
+                        $("#petsDisplay").text('');
+                        $("#discountDisplay").text('');
+                        $("#pricePerNightDisplay").text('');
+                        $("#totalDisplay").text('');
+                    } else {
+                        alert(d.hint);
+                    }
+                }
+            });
+        });
+    });
+
+    $(document).on("click", "#summaryModal .close", function(){
+        openModal("#myModal"); 
+    });
+
+    $(document).on("click", "#confirmModal .close", function(){
+        closeAllModals(); 
+    });
+
+    $(document).on("click", ".closeConfirmBtn", function(){
+        closeAllModals(); 
+    });
+
+    $(document).on("click",".bookBtn", function(){
+        let roomID = $(this).data("roomid");
+        let roomNo = $(this).data("roomno");
+
+        $("#selectedRoomID").val(roomID);
+        $("#modalTitle").text("Book Room " + roomNo);
+
+        openModal("#myModal"); 
     });
 });
 
-$(document).on("click",".bookBtn", function(){
-    let roomID = $(this).data("roomid");
-    let roomNo = $(this).data("roomno");
-    let price = $(this).data("price");
 
-    $("#selectedRoomID").val(roomID);
-    $("#modalTitle").text("Book Room " + roomNo);
-    $("#myModal").show();
+function resetBookingForm() {
+    $("#selectedRoomID").val('');
+    $("#modalCheckIN").val('');
+    $("#modalCheckOUT").val('');
 
-     
-});
+    $("#adultCount").text('1');
+    $("#childCount").text('0');
+
+    $("#petCheck").prop("checked", false);
+
+    $("input[name='discount'][value='']").prop("checked", true);
+}
 
 function loadRooms(){
     $.ajax({
@@ -63,6 +149,11 @@ function loadRooms(){
         type:"GET",
         success:function(data){
             let rooms = JSON.parse(data);
+            
+            if (rooms.length == 0) {
+                $("#room").append('<tr><td colspan="11">NO DATA AVAILABLE</td></tr>');
+                return;
+            }
 
             rooms.forEach(e => {
                 let row = `
@@ -129,3 +220,60 @@ $("#loginBtn").click(function(){
         }
     });
 });
+
+function showPaymentModal(resID, totalAmount) {
+    $("#paymentResID").val(resID);
+    $("#paymentAmount").text("₱" + totalAmount);
+    $("#payMethod").val("CASH");
+    $("#cardDetailsForm").hide();
+    $("#cardNumber, #cardName, #cardExpiry, #cardCVV").val('');
+    $("#paymentModal").css("display", "flex");
+}
+
+$(document).on("click", "#paymentModal .close", function() {
+    $("#paymentModal").fadeOut(150);
+});
+
+$(document).on("change", "#payMethod", function() {
+    if($(this).val() == "CARD") {
+        $("#cardDetailsForm").slideDown(200);
+    } else {
+        $("#cardDetailsForm").slideUp(200);
+    }
+});     
+
+$(document).on("click", "#confirmPaymentBtn", function() {
+    let resID = $("#paymentResID").val();
+    let payMethod = $("#payMethod").val();
+
+    if(payMethod == "CARD") {
+        let cardNumber = $("#cardNumber").val().trim();
+        let cardName = $("#cardName").val().trim();
+
+        if(cardNumber == '' || cardName == '') {
+            alert("Please fill in all card details");
+            return;
+        }
+    }
+
+    $.ajax({
+        url:"../../controller/booking.php",
+        type:"POST",
+        data:{
+            action:"confirmPayment",
+            resID:resID,
+            payMethod:payMethod
+        },
+        success:function(data) {
+            let d = JSON.parse(data);
+
+            if(d.success) {
+                $("#paymentModal").fadeOut(150);
+                $("#confirmModal").css("display", "flex");
+            } else {
+                alert(d.hint);
+            }
+        }
+    });
+});
+

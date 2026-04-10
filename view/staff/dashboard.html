@@ -10,16 +10,57 @@
     <div class="sidebar">
         <h2>Hotel Management</h2>
         
-        <a href="dashboard.html" class="menu-item">Dashboard</a>
-        <a href="rooms.html" class="managerOnly">Rooms</a>
-        <a href="reservations.html" class="managerOnly">Reservations</a>
+        <a href="dashboard.html" class="managerOnly">Dashboard</a>
+        <a href="reservations.html" class="menu-item">Reservations</a>
+        <a href="rooms.html" class="menu-item">Rooms</a>
         <a href="promotions.html" class="managerOnly">Promotions</a>
-        <a href="reports.html" class="managerOnly">Reports</a>
+        <a href="payments.html" class="managerOnly">Payment Records</a>
         <a href="user.html" class="adminOnly">Manage Users</a>
         
         <div class="sidebar-bottom">
             <a href="#" id="logoutBtn" class="menu-item logout">LOGOUT</a>
         </div>
     </div>
+
+    <div class="main" id="dashboard">
+        <div class="dashboard-grid">
+
+            <div class="chart-card">
+                <h3>REVENUE PER MONTH</h3>
+                <canvas id="revenueChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>MOST BOOKED ROOM TYPES</h3>
+                <canvas id="roomTypesChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>OCCUPANCY RATE</h3>
+                <canvas id="occupancyChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>MOST FREQUENT GUESTS</h3>
+                <table class="dashboard-table" id="frequentGuestsTable">
+                    <thead>
+                        <tr>
+                            <th>NAME</th>
+                            <th>EMAIL</th>
+                            <th>BOOKINGS</th>
+                            <th>TOTAL SPENT</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="../../assets/scripts/dashboard.js"></script>
 </body>
 </html>

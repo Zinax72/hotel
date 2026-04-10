@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include("../db.php");
-include("../model/reservations.php");
+include_once("../model/reservations.php");
 include_once("../model/rooms.php");
 include_once("../model/users.php");
 

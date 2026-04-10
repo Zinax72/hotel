@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2026 at 06:43 PM
+-- Generation Time: Apr 10, 2026 at 08:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -114,7 +114,20 @@ INSERT INTO `login_audit` (`auditID`, `loginName`, `loginTime`, `action`) VALUES
 (53, 'raymondb@gmail.com', '2026-04-07 14:58:04', 'LOGIN'),
 (54, 'AASD@GMAIL.COM', '2026-04-07 15:59:47', 'LOGIN'),
 (55, '', '2026-04-07 16:27:07', 'LOGIN'),
-(56, 'raymondb@gmail.com', '2026-04-07 16:27:17', 'LOGIN');
+(56, 'raymondb@gmail.com', '2026-04-07 16:27:17', 'LOGIN'),
+(57, 'AASD@GMAIL.COM', '2026-04-07 16:48:09', 'LOGIN'),
+(58, '', '2026-04-07 16:48:15', 'LOGIN'),
+(59, 'raymondb@gmail.com', '2026-04-07 16:48:38', 'LOGIN'),
+(60, 'AASD@GMAIL.COM', '2026-04-07 17:24:57', 'LOGIN'),
+(61, 'AASD@GMAIL.COM', '2026-04-08 12:48:49', 'LOGIN'),
+(62, '', '2026-04-08 13:54:38', 'LOGIN'),
+(63, 'AASD@GMAIL.COM', '2026-04-08 13:54:41', 'LOGIN'),
+(64, '', '2026-04-08 14:12:01', 'LOGIN'),
+(65, 'AASD@GMAIL.COM', '2026-04-08 14:12:04', 'LOGIN'),
+(66, 'AASD@GMAIL.COM', '2026-04-08 14:12:36', 'LOGIN'),
+(67, '', '2026-04-08 16:23:51', 'LOGIN'),
+(68, 'AASD@GMAIL.COM', '2026-04-09 16:58:08', 'LOGIN'),
+(69, 'AASD@GMAIL.COM', '2026-04-10 01:26:47', 'LOGIN');
 
 -- --------------------------------------------------------
 
@@ -130,6 +143,14 @@ CREATE TABLE `payments` (
   `payStatus` enum('PENDING','PAID','REFUNDED') DEFAULT 'PENDING',
   `payDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`paymentID`, `resID`, `amount`, `payMethod`, `payStatus`, `payDate`) VALUES
+(1, 99, 16000.00, 'CASH', 'PAID', '2026-04-10 05:56:48'),
+(2, 100, 16000.00, 'CASH', 'PAID', '2026-04-10 05:58:30');
 
 -- --------------------------------------------------------
 
@@ -178,6 +199,7 @@ CREATE TABLE `reservations` (
   `hasPet` tinyint(1) DEFAULT 0,
   `discountID` int(11) DEFAULT NULL,
   `promoID` int(11) DEFAULT NULL,
+  `totalPrice` decimal(10,2) DEFAULT NULL,
   `status` enum('PENDING','CONFIRMED','CANCELLED','COMPLETED') DEFAULT 'PENDING',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -186,23 +208,19 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`resID`, `userID`, `roomID`, `checkIn`, `checkOut`, `guestsNum`, `numAdults`, `numChildren`, `hasPet`, `discountID`, `promoID`, `status`, `createdAt`) VALUES
-(7, 1, 3, '2026-03-29', '2026-03-31', 4, 3, 1, 1, 1, NULL, 'PENDING', '2026-03-28 22:53:21'),
-(8, 1, 3, '2026-03-29', '2026-03-31', 4, 3, 1, 1, 1, NULL, 'PENDING', '2026-03-28 22:53:24'),
-(9, 1, 3, '2026-03-29', '2026-03-31', 4, 3, 1, 1, 1, NULL, 'PENDING', '2026-03-28 22:54:00'),
-(12, 1, 1, '0000-00-00', '0000-00-00', 2, 1, 0, 0, NULL, NULL, 'PENDING', '2026-03-29 03:30:52'),
-(13, 1, 1, '2026-03-23', '2026-03-31', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-03-29 03:31:34'),
-(14, 1, 1, '0000-00-00', '0000-00-00', 2, 1, 1, 0, NULL, NULL, 'PENDING', '2026-03-29 04:00:10'),
-(15, 1, 7, '2026-03-29', '2026-03-31', 3, 2, 1, 1, 1, NULL, 'PENDING', '2026-03-29 05:03:38'),
-(16, 1, 6, '2026-03-30', '2026-04-01', 3, 2, 1, 1, 1, NULL, 'PENDING', '2026-03-30 04:16:42'),
-(18, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'CONFIRMED', '2026-03-30 07:21:39'),
-(19, 1, 3, '2026-03-31', '2026-04-02', 4, 2, 2, 1, 2, NULL, 'CANCELLED', '2026-03-30 08:17:27'),
-(20, 1, 8, '2026-04-01', '2026-04-03', 3, 2, 1, 1, 2, NULL, 'CANCELLED', '2026-04-01 00:37:19'),
-(39, 18, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 07:14:21'),
-(40, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 11:29:41'),
-(41, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 11:30:05'),
-(42, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 11:30:46'),
-(43, 20, 8, '0000-00-00', '0000-00-00', 4, 1, 3, 0, NULL, NULL, 'PENDING', '2026-04-06 11:31:16');
+INSERT INTO `reservations` (`resID`, `userID`, `roomID`, `checkIn`, `checkOut`, `guestsNum`, `numAdults`, `numChildren`, `hasPet`, `discountID`, `promoID`, `totalPrice`, `status`, `createdAt`) VALUES
+(89, 1, 4, '2026-04-10', '2026-04-11', 1, 1, 0, 0, 2, NULL, NULL, 'PENDING', '2026-04-10 02:19:50'),
+(90, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:22'),
+(91, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:23'),
+(92, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:26'),
+(93, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:28'),
+(94, 1, 6, '2026-04-10', '2026-04-11', 4, 3, 1, 1, 1, NULL, 3580.00, 'PENDING', '2026-04-10 05:48:40'),
+(95, 1, 8, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 2, NULL, 8400.00, 'PENDING', '2026-04-10 05:49:23'),
+(96, 1, 3, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, 4200.00, 'PENDING', '2026-04-10 05:52:25'),
+(97, 1, 2, '2026-04-08', '2026-04-11', 1, 1, 0, 0, 2, NULL, 6000.00, 'PENDING', '2026-04-10 05:54:38'),
+(98, 1, 10, '2026-04-10', '2026-04-11', 1, 1, 0, 0, 2, NULL, 2000.00, 'PENDING', '2026-04-10 05:55:35'),
+(99, 1, 8, '2026-04-12', '2026-04-14', 1, 1, 0, 0, 2, NULL, 16000.00, 'PENDING', '2026-04-10 05:56:48'),
+(100, 1, 8, '2026-04-07', '2026-04-09', 1, 1, 0, 0, 2, NULL, 16000.00, 'CONFIRMED', '2026-04-10 05:58:29');
 
 -- --------------------------------------------------------
 
@@ -319,7 +337,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `lastName`, `firstName`, `email`, `password`, `contactNo`, `role`) VALUES
-(1, 'RAYMOND', 'ABOY', 'AASD@GMAIL.COM', '$2y$10$XFHYk3obe05bFORHriAeW.C/DGwUEHkZcd1TWPVoEcD.MQylojg4e', '123123123', 'GUEST'),
+(1, 'RAYMOND', 'ABOY', 'AASD@GMAIL.COM', '$2y$10$3JK3hfrskTFuuy8rAQTysO9Sr5RmE5ykSnRRrlUnoLhtHBZZKpfe6', '123123123', 'GUEST'),
 (4, 'James', 'Dimla', 'james@gmail.com', '$2y$10$jOwuDxxeth0V9Bfkaymbz.qoaRK2eriNAlyO3DXuqiYrKE8HeF3xq', '09000000002', 'MANAGER'),
 (8, '123', '123', '123@gmail.com', '12345678', '09457422529', 'GUEST'),
 (9, '4321', '43215', '4321@gmail.com', '87654321', '09457422529', 'GUEST'),
@@ -330,7 +348,7 @@ INSERT INTO `users` (`userID`, `lastName`, `firstName`, `email`, `password`, `co
 (15, 'raymond', 'Aboy', 'aboy@gmail.com', '$2y$10$DdQ3udR35j7kANNDqVQFf.ZGjOGsvarFB2LoB0bNx8eM3Qn.M7mnm', '09457422529', 'GUEST'),
 (17, 'Raymond Benjamin', 'Aboy', 'raymondb@gmail.com', '$2y$10$LbkCxp.HaWguPognZj1dYO6wC0TJFEYeoomGVd1qItngqf39OB2H6', '09457422529', 'ADMIN'),
 (18, 'Aboy', 'Ray', 'raymondab@gmail.com', '$2y$10$Qh/HXf4KZNGph.UPJiKxdOU4k/iqt4cjzR7P5nnXjdVoYPlxn7LG2', '09457422529', 'GUEST'),
-(20, '', '', '', '$2y$10$fAHvq9YRMzFbgdNRIJj4sujL9XcQkBhfQLVd6pCRoQ6hDLud0eM.G', '', 'GUEST'),
+(20, '', '', '', '$2y$10$ssq.UuVC3hbuvGMZFLpiJOKgS6StL4U3hwUDaQZ8I0x2j/H5mYrIK', '', 'GUEST'),
 (22, 'aboyt', 'rayray', 'rayaboy@gmail.com', '$2y$10$X3Xa6VLowwakr4ItgXRhvuBkTesY6va2b1ScOmhojzcZR5IcfakSi', '', 'GUEST');
 
 --
@@ -415,13 +433,13 @@ ALTER TABLE `discount`
 -- AUTO_INCREMENT for table `login_audit`
 --
 ALTER TABLE `login_audit`
-  MODIFY `auditID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `auditID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `promotions`
@@ -433,7 +451,7 @@ ALTER TABLE `promotions`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `resID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `resID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `reservations_archive`
@@ -489,3 +507,45 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+DROP USER 'hotel_receptionist'@'localhost';
+DROP USER 'hotel_admin'@'localhost';
+DROP USER 'hotel_guest'@'localhost';
+DROP USER 'hotel_manager'@'localhost';
+
+-- ── create ──
+CREATE USER 'hotel_admin'@'localhost' IDENTIFIED BY 'admin123';
+CREATE USER 'hotel_guest'@'localhost' IDENTIFIED BY 'guest123';
+CREATE USER 'hotel_receptionist'@'localhost' IDENTIFIED BY 'receptionist123';
+CREATE USER 'hotel_manager'@'localhost' IDENTIFIED BY 'manager123';
+
+GRANT ALL PRIVILEGES ON hotel.* TO 'hotel_admin'@'localhost';
+
+GRANT SELECT ON hotel.rooms TO 'hotel_guest'@'localhost';
+GRANT SELECT ON hotel.roomtypes TO 'hotel_guest'@'localhost';
+GRANT SELECT ON hotel.discount TO 'hotel_guest'@'localhost';
+GRANT SELECT ON hotel.promotions TO 'hotel_guest'@'localhost';
+GRANT SELECT ON hotel.users TO 'hotel_guest'@'localhost';
+GRANT SELECT, INSERT ON hotel.reservations TO 'hotel_guest'@'localhost';
+GRANT SELECT, INSERT ON hotel.payments TO 'hotel_guest'@'localhost';
+GRANT SELECT, INSERT ON hotel.login_audit TO 'hotel_guest'@'localhost';
+
+GRANT SELECT ON hotel.rooms TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.roomtypes TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.discount TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.promotions TO 'hotel_receptionist'@'localhost';
+GRANT SELECT, UPDATE ON hotel.reservations TO 'hotel_receptionist'@'localhost';
+GRANT SELECT, INSERT ON hotel.payments TO 'hotel_receptionist'@'localhost';
+GRANT SELECT ON hotel.users TO 'hotel_receptionist'@'localhost';
+GRANT SELECT, INSERT ON hotel.login_audit TO 'hotel_receptionist'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.rooms TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.roomtypes TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.reservations TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.reservations_archive TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.promotions TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON hotel.payments TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT ON hotel.users TO 'hotel_manager'@'localhost';
+GRANT SELECT ON hotel.discount TO 'hotel_manager'@'localhost';
+GRANT SELECT, INSERT ON hotel.login_audit TO 'hotel_manager'@'localhost';
+
+FLUSH PRIVILEGES;

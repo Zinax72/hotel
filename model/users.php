@@ -50,12 +50,12 @@ function addUser() {
     return $conn->query($sql);
 }
 
-function updatePassword($userID, $newPassword) {
+function updatePassword($email, $newPassword) {
     global $conn;
 
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-    $sql = "UPDATE users SET password='$hashedPassword' WHERE userID='$userID'";
+    $sql = "UPDATE users SET password='$hashedPassword' WHERE email='$email'";
     return $conn->query($sql);
 }
 
