@@ -59,6 +59,16 @@ function updatePassword($email, $newPassword) {
     return $conn->query($sql);
 }
 
+function updatePasswordByID($userID, $newPassword) {
+    global $conn;
+
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $sql = "UPDATE users SET password='$hashedPassword' WHERE userID='$userID'";
+    return $conn->query($sql);
+}
+
+
 function updateEmail($userID, $email) {
     global $conn;
 
@@ -118,5 +128,15 @@ function logAudit($email, $action) {
     $sql = "INSERT INTO login_audit(loginName, action) VALUES ('$email', '$action')";
 
     return $conn -> query($sql);
+}
+
+function verifyUserPassword($userID, $password) {
+    global $conn;
+
+    $sql = "SELECT password FROM users WHERE userID='$userID'";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+
+    return ($row && password_verify($password, $row['password']));
 }
 ?>

@@ -30,12 +30,12 @@ $("#updateEmailBtn").click(function() {
         data: { action: "updateEmail", newEmail, password },
         success: function(res) {
             if (res.success) {
-                $msg.removeClass("error").addClass("success").text("Email updated successfully.");
+                alert("Changed Successfully");
                 $("#currentEmail").val(newEmail);
                 $("#newEmail").val("");
                 $("#emailPassword").val("");
             } else {
-                $msg.removeClass("success").addClass("error").text(res.hint);
+                alert(res.hint);
             }
         }
     });
@@ -70,10 +70,10 @@ $("#updatePasswordBtn").click(function() {
         data: { action: "updatePassword", currentPassword, newPassword },
         success: function(res) {
             if (res.success) {
-                $msg.removeClass("error").addClass("success").text("Password updated successfully.");
+                alert("Password updated successfully.");
                 $("#currentPassword, #newPassword, #confirmPassword").val("");
             } else {
-                $msg.removeClass("success").addClass("error").text(res.hint);
+                alert(res.hint);
             }
         }
     });
