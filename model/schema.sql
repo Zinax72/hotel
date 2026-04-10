@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2026 at 06:43 PM
+-- Generation Time: Apr 10, 2026 at 05:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,74 @@ SET time_zone = "+00:00";
 --
 -- Database: `hotel`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetBookingHistory` ()   BEGIN
+    SELECT 
+        r.resID,
+        r.createdAt,
+        r.checkIn,
+        r.checkOut,
+        r.status,
+        CONCAT(u.firstName, ' ', u.lastName) AS GuestName,
+        u.email AS GuestEmail,
+        u.contactNo,
+        rm.roomNo,
+        rt.typeName AS RoomType,
+        rt.pricePerNight,
+        r.guestsNum,
+        r.numAdults,
+        r.numChildren,
+        r.hasPet,
+        d.discountType AS Discount,
+        d.discountPercent AS DiscountPercent,
+        p.promoName AS Promotion,
+        p.discountPercent AS PromoPercent,
+        r.totalPrice,
+        pay.amount AS AmountPaid,
+        pay.payMethod,
+        pay.payStatus,
+        pay.payDate
+    FROM reservations r
+    JOIN users u ON r.userID = u.userID
+    JOIN rooms rm ON r.roomID = rm.roomID
+    JOIN roomtypes rt ON rm.roomTypeID = rt.typeID
+    LEFT JOIN discount d ON r.discountID = d.discountID
+    LEFT JOIN promotions p ON r.promoID = p.promoID
+    LEFT JOIN payments pay ON r.resID = pay.resID
+    ORDER BY r.createdAt DESC;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetRoomAvailability` (IN `p_checkIn` DATE, IN `p_checkOut` DATE)   BEGIN
+    SELECT 
+        rm.roomID,
+        rm.roomNo,
+        rm.floor,
+        rm.status AS RoomStatus,
+        rt.typeName AS RoomType,
+        rt.pricePerNight,
+        rt.maxOccupancy,
+        CASE 
+            WHEN rm.status = 'MAINTENANCE' THEN 'UNAVAILABLE - MAINTENANCE'
+            WHEN rm.status = 'OCCUPIED' THEN 'UNAVAILABLE - OCCUPIED'
+            WHEN EXISTS (
+                SELECT 1 FROM reservations r
+                WHERE r.roomID = rm.roomID
+                AND r.status NOT IN ('CANCELLED')
+                AND r.checkIn < p_checkOut
+                AND r.checkOut > p_checkIn
+            ) THEN 'UNAVAILABLE - RESERVED'
+            ELSE 'AVAILABLE'
+        END AS Availability
+    FROM rooms rm
+    JOIN roomtypes rt ON rm.roomTypeID = rt.typeID
+    ORDER BY rm.floor, rm.roomNo;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -114,7 +182,38 @@ INSERT INTO `login_audit` (`auditID`, `loginName`, `loginTime`, `action`) VALUES
 (53, 'raymondb@gmail.com', '2026-04-07 14:58:04', 'LOGIN'),
 (54, 'AASD@GMAIL.COM', '2026-04-07 15:59:47', 'LOGIN'),
 (55, '', '2026-04-07 16:27:07', 'LOGIN'),
-(56, 'raymondb@gmail.com', '2026-04-07 16:27:17', 'LOGIN');
+(56, 'raymondb@gmail.com', '2026-04-07 16:27:17', 'LOGIN'),
+(57, 'AASD@GMAIL.COM', '2026-04-07 16:48:09', 'LOGIN'),
+(58, '', '2026-04-07 16:48:15', 'LOGIN'),
+(59, 'raymondb@gmail.com', '2026-04-07 16:48:38', 'LOGIN'),
+(60, 'AASD@GMAIL.COM', '2026-04-07 17:24:57', 'LOGIN'),
+(61, 'AASD@GMAIL.COM', '2026-04-08 12:48:49', 'LOGIN'),
+(62, '', '2026-04-08 13:54:38', 'LOGIN'),
+(63, 'AASD@GMAIL.COM', '2026-04-08 13:54:41', 'LOGIN'),
+(64, '', '2026-04-08 14:12:01', 'LOGIN'),
+(65, 'AASD@GMAIL.COM', '2026-04-08 14:12:04', 'LOGIN'),
+(66, 'AASD@GMAIL.COM', '2026-04-08 14:12:36', 'LOGIN'),
+(67, '', '2026-04-08 16:23:51', 'LOGIN'),
+(68, 'AASD@GMAIL.COM', '2026-04-09 16:58:08', 'LOGIN'),
+(69, 'AASD@GMAIL.COM', '2026-04-10 01:26:47', 'LOGIN'),
+(70, 'raymondb@gmail.com', '2026-04-10 07:14:19', 'LOGIN'),
+(71, 'AASD@GMAIL.COM', '2026-04-10 11:56:06', 'LOGIN'),
+(72, 'james@gmail.com', '2026-04-10 12:02:37', 'LOGIN'),
+(73, 'nyle12@gmail.com', '2026-04-10 12:08:21', 'LOGIN'),
+(74, 'AASD@GMAIL.COM', '2026-04-10 12:10:27', 'LOGIN'),
+(75, 'AASD@GMAIL.COM', '2026-04-10 12:11:41', 'LOGIN'),
+(76, 'raymondb@gmail.com', '2026-04-10 12:15:40', 'LOGIN'),
+(77, 'AASD@GMAIL.COM', '2026-04-10 12:16:57', 'LOGIN'),
+(78, 'AASD@GMAIL.COM', '2026-04-10 12:19:55', 'LOGIN'),
+(79, 'AASD@GMAIL.COM', '2026-04-10 12:31:19', 'LOGIN'),
+(80, 'AASD@GMAIL.COM', '2026-04-10 12:32:24', 'LOGIN'),
+(81, 'raymondb@gmail.com', '2026-04-10 12:41:20', 'LOGIN'),
+(82, 'AASD@GMAIL.COM', '2026-04-10 12:44:10', 'LOGIN'),
+(83, 'raymondb@gmail.com', '2026-04-10 13:10:59', 'LOGIN'),
+(84, 'AASD@GMAIL.COM', '2026-04-10 13:25:22', 'LOGIN'),
+(85, 'AASD@GMAIL.COM', '2026-04-10 13:33:33', 'LOGIN'),
+(86, 'AASD@GMAIL.COM', '2026-04-10 13:53:37', 'LOGIN'),
+(87, 'AASD@GMAIL.COM', '2026-04-10 14:40:54', 'LOGIN');
 
 -- --------------------------------------------------------
 
@@ -130,6 +229,30 @@ CREATE TABLE `payments` (
   `payStatus` enum('PENDING','PAID','REFUNDED') DEFAULT 'PENDING',
   `payDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`paymentID`, `resID`, `amount`, `payMethod`, `payStatus`, `payDate`) VALUES
+(1, 99, 16000.00, 'CASH', 'PAID', '2026-04-10 05:56:48'),
+(2, 100, 16000.00, 'CASH', 'PAID', '2026-04-10 05:58:30'),
+(3, 106, 1200.00, 'CASH', 'PAID', '2026-04-10 14:38:25'),
+(4, 107, 1200.00, 'CASH', 'PAID', '2026-04-10 14:38:32'),
+(5, 109, 4000.00, 'CASH', 'PAID', '2026-04-10 14:52:28'),
+(6, 110, 4000.00, 'CASH', 'PAID', '2026-04-10 14:52:46'),
+(7, 111, 1200.00, 'CASH', 'PAID', '2026-04-10 14:52:58'),
+(8, 112, 1200.00, 'CASH', 'PAID', '2026-04-10 14:53:44'),
+(9, 113, 1200.00, 'CASH', 'PAID', '2026-04-10 14:53:50'),
+(10, 114, 1200.00, 'CASH', 'PAID', '2026-04-10 14:54:52'),
+(11, 115, 1200.00, 'CASH', 'PAID', '2026-04-10 14:55:13'),
+(12, 116, 8000.00, 'CASH', 'PAID', '2026-04-10 14:56:40'),
+(13, 120, 2400.00, 'CASH', 'PAID', '2026-04-10 15:01:37'),
+(14, 124, 9600.00, 'CASH', 'PAID', '2026-04-10 15:03:45'),
+(15, 125, 2400.00, 'CASH', 'PAID', '2026-04-10 15:05:45'),
+(16, 126, 1200.00, 'CASH', 'PAID', '2026-04-10 15:06:03'),
+(17, 127, 1200.00, 'CASH', 'PAID', '2026-04-10 15:06:22'),
+(18, 132, 1900.00, 'CASH', 'PAID', '2026-04-10 15:36:50');
 
 -- --------------------------------------------------------
 
@@ -178,6 +301,7 @@ CREATE TABLE `reservations` (
   `hasPet` tinyint(1) DEFAULT 0,
   `discountID` int(11) DEFAULT NULL,
   `promoID` int(11) DEFAULT NULL,
+  `totalPrice` decimal(10,2) DEFAULT NULL,
   `status` enum('PENDING','CONFIRMED','CANCELLED','COMPLETED') DEFAULT 'PENDING',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -186,23 +310,52 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`resID`, `userID`, `roomID`, `checkIn`, `checkOut`, `guestsNum`, `numAdults`, `numChildren`, `hasPet`, `discountID`, `promoID`, `status`, `createdAt`) VALUES
-(7, 1, 3, '2026-03-29', '2026-03-31', 4, 3, 1, 1, 1, NULL, 'PENDING', '2026-03-28 22:53:21'),
-(8, 1, 3, '2026-03-29', '2026-03-31', 4, 3, 1, 1, 1, NULL, 'PENDING', '2026-03-28 22:53:24'),
-(9, 1, 3, '2026-03-29', '2026-03-31', 4, 3, 1, 1, 1, NULL, 'PENDING', '2026-03-28 22:54:00'),
-(12, 1, 1, '0000-00-00', '0000-00-00', 2, 1, 0, 0, NULL, NULL, 'PENDING', '2026-03-29 03:30:52'),
-(13, 1, 1, '2026-03-23', '2026-03-31', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-03-29 03:31:34'),
-(14, 1, 1, '0000-00-00', '0000-00-00', 2, 1, 1, 0, NULL, NULL, 'PENDING', '2026-03-29 04:00:10'),
-(15, 1, 7, '2026-03-29', '2026-03-31', 3, 2, 1, 1, 1, NULL, 'PENDING', '2026-03-29 05:03:38'),
-(16, 1, 6, '2026-03-30', '2026-04-01', 3, 2, 1, 1, 1, NULL, 'PENDING', '2026-03-30 04:16:42'),
-(18, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'CONFIRMED', '2026-03-30 07:21:39'),
-(19, 1, 3, '2026-03-31', '2026-04-02', 4, 2, 2, 1, 2, NULL, 'CANCELLED', '2026-03-30 08:17:27'),
-(20, 1, 8, '2026-04-01', '2026-04-03', 3, 2, 1, 1, 2, NULL, 'CANCELLED', '2026-04-01 00:37:19'),
-(39, 18, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 07:14:21'),
-(40, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 11:29:41'),
-(41, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 11:30:05'),
-(42, 1, 1, '0000-00-00', '0000-00-00', 1, 1, 0, 0, NULL, NULL, 'PENDING', '2026-04-06 11:30:46'),
-(43, 20, 8, '0000-00-00', '0000-00-00', 4, 1, 3, 0, NULL, NULL, 'PENDING', '2026-04-06 11:31:16');
+INSERT INTO `reservations` (`resID`, `userID`, `roomID`, `checkIn`, `checkOut`, `guestsNum`, `numAdults`, `numChildren`, `hasPet`, `discountID`, `promoID`, `totalPrice`, `status`, `createdAt`) VALUES
+(89, 1, 4, '2026-04-10', '2026-04-11', 1, 1, 0, 0, 2, NULL, NULL, 'PENDING', '2026-04-10 02:19:50'),
+(90, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:22'),
+(91, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:23'),
+(92, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:26'),
+(93, 1, 7, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, NULL, 'PENDING', '2026-04-10 05:40:28'),
+(94, 1, 6, '2026-04-10', '2026-04-11', 4, 3, 1, 1, 1, NULL, 3580.00, 'PENDING', '2026-04-10 05:48:40'),
+(95, 1, 8, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 2, NULL, 8400.00, 'PENDING', '2026-04-10 05:49:23'),
+(96, 1, 3, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, 4200.00, 'PENDING', '2026-04-10 05:52:25'),
+(97, 1, 2, '2026-04-08', '2026-04-11', 1, 1, 0, 0, 2, NULL, 6000.00, 'PENDING', '2026-04-10 05:54:38'),
+(98, 1, 10, '2026-04-10', '2026-04-11', 1, 1, 0, 0, 2, NULL, 2000.00, 'PENDING', '2026-04-10 05:55:35'),
+(99, 1, 8, '2026-04-12', '2026-04-14', 1, 1, 0, 0, 2, NULL, 16000.00, 'CANCELLED', '2026-04-10 05:56:48'),
+(100, 1, 8, '2026-04-07', '2026-04-09', 1, 1, 0, 0, 2, NULL, 16000.00, 'CONFIRMED', '2026-04-10 05:58:29'),
+(101, 1, 1, '2026-04-10', '2026-04-11', 3, 2, 1, 0, 1, NULL, 1200.00, 'PENDING', '2026-04-10 13:47:17'),
+(102, 1, 5, '2026-04-10', '2026-04-11', 1, 1, 0, 0, 2, NULL, 2000.00, 'PENDING', '2026-04-10 14:28:04'),
+(103, 1, 9, '2026-04-04', '2026-04-11', 1, 1, 0, 0, 2, NULL, 8400.00, 'PENDING', '2026-04-10 14:29:29'),
+(104, 1, 1, '2026-04-11', '2026-04-14', 1, 1, 0, 0, 2, NULL, 3600.00, 'PENDING', '2026-04-10 14:30:16'),
+(105, 1, 4, '2026-04-08', '2026-04-10', 1, 1, 0, 0, 2, NULL, 2400.00, 'PENDING', '2026-04-10 14:31:08'),
+(106, 1, 4, '2026-04-07', '2026-04-08', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 14:38:21'),
+(107, 1, 1, '2026-04-07', '2026-04-08', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 14:38:31'),
+(108, 1, 4, '2026-04-10', '2026-04-11', 1, 1, 0, 0, 2, NULL, 1200.00, 'PENDING', '2026-04-10 14:50:44'),
+(109, 1, 5, '2026-04-07', '2026-04-09', 1, 1, 0, 0, 2, NULL, 4000.00, 'CONFIRMED', '2026-04-10 14:52:27'),
+(110, 1, 10, '2026-04-07', '2026-04-09', 1, 1, 0, 0, 2, NULL, 4000.00, 'CONFIRMED', '2026-04-10 14:52:45'),
+(111, 1, 4, '2026-04-02', '2026-04-02', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 14:52:58'),
+(112, 1, 1, '2026-04-02', '2026-04-02', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 14:53:42'),
+(113, 1, 1, '2026-04-02', '2026-04-02', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 14:53:46'),
+(114, 1, 4, '2026-04-03', '2026-04-04', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 14:54:52'),
+(115, 1, 4, '2026-04-03', '2026-04-04', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 14:55:04'),
+(116, 1, 3, '2026-04-07', '2026-04-09', 1, 1, 0, 0, 2, NULL, 8000.00, 'CONFIRMED', '2026-04-10 14:56:39'),
+(117, 1, 7, '2026-04-07', '2026-04-09', 1, 1, 0, 0, 2, NULL, 8000.00, 'PENDING', '2026-04-10 14:57:49'),
+(118, 1, 4, '2026-04-07', '2026-04-06', 1, 1, 0, 0, 2, NULL, 1200.00, 'PENDING', '2026-04-10 14:58:00'),
+(119, 1, 6, '2026-04-07', '2026-04-09', 1, 1, 0, 0, 2, NULL, 5600.00, 'PENDING', '2026-04-10 15:01:03'),
+(120, 1, 9, '2026-04-13', '2026-04-15', 1, 1, 0, 0, 2, NULL, 2400.00, 'CONFIRMED', '2026-04-10 15:01:37'),
+(121, 1, 4, '2026-04-13', '2026-04-11', 1, 1, 0, 0, 2, NULL, 2400.00, 'PENDING', '2026-04-10 15:01:56'),
+(122, 1, 4, '2026-04-11', '2026-04-02', 1, 1, 0, 0, 2, NULL, 10800.00, 'PENDING', '2026-04-10 15:02:19'),
+(123, 1, 4, '2026-04-25', '2026-04-03', 1, 1, 0, 0, 2, NULL, 26400.00, 'PENDING', '2026-04-10 15:02:34'),
+(124, 1, 4, '2026-04-17', '2026-04-09', 1, 1, 0, 0, 2, NULL, 9600.00, 'CONFIRMED', '2026-04-10 15:03:00'),
+(125, 1, 9, '2026-04-16', '2026-04-18', 1, 1, 0, 0, 2, NULL, 2400.00, 'CONFIRMED', '2026-04-10 15:05:44'),
+(126, 1, 4, '2026-04-11', '2026-04-11', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 15:06:02'),
+(127, 1, 9, '2026-04-11', '2026-04-12', 1, 1, 0, 0, 2, NULL, 1200.00, 'CONFIRMED', '2026-04-10 15:06:14'),
+(128, 1, 1, '2026-04-03', '2026-04-11', 3, 2, 1, 1, 1, NULL, 10080.00, 'PENDING', '2026-04-10 15:13:09'),
+(129, 1, 1, '2026-04-10', '2026-04-11', 3, 2, 1, 1, 1, NULL, 1260.00, 'PENDING', '2026-04-10 15:14:43'),
+(130, 1, 1, '2026-04-02', '2026-04-04', 1, 1, 0, 0, 2, NULL, 2400.00, 'PENDING', '2026-04-10 15:15:11'),
+(131, 1, 1, '2026-04-02', '2026-04-10', 5, 3, 2, 0, 2, NULL, 14720.00, 'PENDING', '2026-04-10 15:28:10'),
+(132, 1, 1, '2026-04-07', '2026-04-08', 5, 3, 2, 1, 1, NULL, 1900.00, 'CONFIRMED', '2026-04-10 15:36:47'),
+(133, 1, 4, '2026-04-02', '2026-04-04', 1, 1, 0, 0, 2, NULL, 2400.00, 'PENDING', '2026-04-10 15:38:12');
 
 -- --------------------------------------------------------
 
@@ -319,8 +472,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `lastName`, `firstName`, `email`, `password`, `contactNo`, `role`) VALUES
-(1, 'RAYMOND', 'ABOY', 'AASD@GMAIL.COM', '$2y$10$XFHYk3obe05bFORHriAeW.C/DGwUEHkZcd1TWPVoEcD.MQylojg4e', '123123123', 'GUEST'),
-(4, 'James', 'Dimla', 'james@gmail.com', '$2y$10$jOwuDxxeth0V9Bfkaymbz.qoaRK2eriNAlyO3DXuqiYrKE8HeF3xq', '09000000002', 'MANAGER'),
+(1, 'RAYMOND', 'ABOY', 'AASD@GMAIL.COM', '$2y$10$P3u4W457K7feBHZYWKjSAe8LfgSkhovqx8mxvfBwfwx7DIJW6xAa2', '123123123', 'GUEST'),
+(4, 'James', 'Dimla', 'james@gmail.com', '$2y$10$s9ah5eN3ehac5/0cAbIw3e5YnYoCtayxoOve0hGr7sQI/qhegxe/q', '09000000002', 'MANAGER'),
 (8, '123', '123', '123@gmail.com', '12345678', '09457422529', 'GUEST'),
 (9, '4321', '43215', '4321@gmail.com', '87654321', '09457422529', 'GUEST'),
 (11, '43210', '43210', '43210@gmail.com', '$2y$10$iLNV9vrlYfKkVeS9tLDC1ucfziuwH1yTQaShbx8HJ8QODViIvPYEW', '09457422529', 'GUEST'),
@@ -330,8 +483,10 @@ INSERT INTO `users` (`userID`, `lastName`, `firstName`, `email`, `password`, `co
 (15, 'raymond', 'Aboy', 'aboy@gmail.com', '$2y$10$DdQ3udR35j7kANNDqVQFf.ZGjOGsvarFB2LoB0bNx8eM3Qn.M7mnm', '09457422529', 'GUEST'),
 (17, 'Raymond Benjamin', 'Aboy', 'raymondb@gmail.com', '$2y$10$LbkCxp.HaWguPognZj1dYO6wC0TJFEYeoomGVd1qItngqf39OB2H6', '09457422529', 'ADMIN'),
 (18, 'Aboy', 'Ray', 'raymondab@gmail.com', '$2y$10$Qh/HXf4KZNGph.UPJiKxdOU4k/iqt4cjzR7P5nnXjdVoYPlxn7LG2', '09457422529', 'GUEST'),
-(20, '', '', '', '$2y$10$fAHvq9YRMzFbgdNRIJj4sujL9XcQkBhfQLVd6pCRoQ6hDLud0eM.G', '', 'GUEST'),
-(22, 'aboyt', 'rayray', 'rayaboy@gmail.com', '$2y$10$X3Xa6VLowwakr4ItgXRhvuBkTesY6va2b1ScOmhojzcZR5IcfakSi', '', 'GUEST');
+(20, '', '', '', '$2y$10$ssq.UuVC3hbuvGMZFLpiJOKgS6StL4U3hwUDaQZ8I0x2j/H5mYrIK', '', 'GUEST'),
+(22, 'aboyt', 'rayray', 'rayaboy@gmail.com', '$2y$10$X3Xa6VLowwakr4ItgXRhvuBkTesY6va2b1ScOmhojzcZR5IcfakSi', '', 'GUEST'),
+(23, 'bansil', 'nyle', 'nyle@gmail.com', 'secret', '0945742229', 'GUEST'),
+(25, 'bansil', 'nyle', 'nyle12@gmail.com', '$2y$10$s9ah5eN3ehac5/0cAbIw3e5YnYoCtayxoOve0hGr7sQI/qhegxe/q', '0945742229', 'RECEPTIONIST');
 
 --
 -- Indexes for dumped tables
@@ -415,13 +570,13 @@ ALTER TABLE `discount`
 -- AUTO_INCREMENT for table `login_audit`
 --
 ALTER TABLE `login_audit`
-  MODIFY `auditID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `auditID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `paymentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `promotions`
@@ -433,7 +588,7 @@ ALTER TABLE `promotions`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `resID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `resID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `reservations_archive`
@@ -457,7 +612,7 @@ ALTER TABLE `roomtypes`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables
@@ -488,4 +643,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-

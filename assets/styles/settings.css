@@ -1,0 +1,254 @@
+body {
+    background: #1e1e24;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #d1d5db;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background: #0f1117;
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 245px;
+    height: 100vh;
+    padding: 32px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    border-right: 6px solid #4a7c9d;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    text-align: left;
+}
+
+.sidebar a {
+    font-family: 'Times New Roman', Times, serif;
+    padding: 6px 16px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 10px 0;
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+.sidebar a:hover {
+    color: #96c3e0;
+}
+
+.sidebar-bottom {
+    position: fixed;
+    bottom: 0;
+    text-transform: uppercase;
+    margin-left: 40px;
+    margin-top: auto;
+}
+
+.main {
+    margin-left: 245px;
+    padding: 20px;
+}
+
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+    max-width: 1400px;
+    margin: 40px auto 10px auto;
+}
+
+.table-header h2 {
+    color: #96c3e0;
+    font-family: Georgia, serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* ── SETTINGS CARD ── */
+.settings-card {
+    width: 95%;
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #0f1117;
+    border: 2px solid #4a7c9d;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(74, 124, 157, 0.15);
+}
+
+.settings-section h3 {
+    color: #96c3e0;
+    font-family: Georgia, serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+}
+
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.settings-group label {
+    color: #96c3e0;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.settings-group input {
+    background-color: #1e1e24;
+    border: 1px solid #4a7c9d55;
+    color: #f5efe6;
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 4px;
+    outline: none;
+    transition: border 0.2s;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.settings-group input:focus {
+    border-color: #96c3e0;
+}
+
+.settings-group input[readonly] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.settings-btn {
+    margin-top: 8px;
+    background-color: #4a7c9d;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.settings-btn:hover {
+    background-color: #96c3e0;
+    color: #0f1117;
+}
+
+.settings-divider {
+    border: none;
+    border-top: 1px solid #4a7c9d33;
+    margin: 32px 0;
+}
+
+.settings-msg {
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    min-height: 18px;
+}
+
+.settings-msg.success { color: #6dbf7e; }
+.settings-msg.error   { color: #e06b6b; }
+
+/* ── RESERVATIONS TABLE ── */
+#reservationsTable {
+    margin: 0 auto 40px auto;
+    width: 95%;
+    max-width: 1400px;
+    border-collapse: collapse;
+    background-color: #0f1117;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+#reservationsTable thead th {
+    background-color: #96c3e0;
+    color: #4a7c9d;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 16px 12px;
+    letter-spacing: 2px;
+    font-size: 13px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+#reservationsTable tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #00000033;
+}
+
+#reservationsTable tbody tr:hover {
+    background-color: #4a7c9d;
+    transform: scale(1.01);
+}
+
+#reservationsTable td {
+    padding: 14px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.cancelBtn {
+    background-color: transparent;
+    border: 1px solid #4a7c9d;
+    color: #f5efe6;
+    padding: 8px 14px;
+    margin: 0 4px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.cancelBtn:hover {
+    background-color: #8b0000;
+    border-color: #8b0000;
+    color: white;
+}
+
+#emptyTable {
+    margin: auto;
+    text-align: center;
+    padding-top: 15%;
+    font-size: 50px;
+    color: white;
+}
+
+@media (max-width: 1200px) {
+    #reservationsTable {
+        font-size: 13px;
+        width: 98%;
+    }
+
+    #reservationsTable td, #reservationsTable th {
+        padding: 12px 8px;
+    }
+}

@@ -21,7 +21,7 @@ function loadRooms() {
         success:function(data)  {
             let r = JSON.parse(data);
             if(r.length == 0) {
-                $("#emptyTable").html('<p>No Rooms Found</p>');
+                $("#rooms").append('<tr><td colspan="8">NO DATA AVAILABLE</td></tr>');
                 return;
             }
 

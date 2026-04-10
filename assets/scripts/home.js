@@ -5,6 +5,17 @@ $(function() {
         e.preventDefault();
         let checkIN = $('#checkIN').val();
         let checkOUT = $('#checkOUT').val();
+        let today = new Date();
+        if (checkIN < today) {
+            alert("Check-in date cannot be in the past.");
+            return;
+        }
+
+        if (checkIN >= checkOUT) {
+            alert("Check-out date must be after check-in date.");
+            return;
+        }
+
         let numAdults = parseInt($("#adultCount").text());    
         let numChildren = parseInt($("#childCount").text());
         let guests = numAdults + numChildren;
@@ -89,24 +100,7 @@ $(function() {
         $("#myModal").hide();
     });
 
-    $.ajax({
-        url:"../../controller/checkSession.php",
-        type:"GET",
-        dataType:"JSON",
-        success:function(data){
-            if(data.loggedIN) {
-                $("#loginBtn").hide();
-                $("#logoutBtn").show();
-                $("#navUsername").text("WELCOME, Mr.  " + data.firstName);
-            } else {
-                $("#logoutBtn").hide();
-                $("#navLogin").show();
-            }
-        }
-    });
-
     $("#modalSumm").load("../../view/guest/summary.html", function(){
-
         $("#confirmModal").appendTo("body");
         $(document).on("click", "#confirmBtn", function(){
             $.ajax({
@@ -127,7 +121,11 @@ $(function() {
 
                     if (d.success) {
                         $("#summaryModal").hide();
-                        $("#confirmModal").show();
+                        
+                        let resID = d.resID || $("#roomID").val();
+                        let totalAmount = d.totalPrice || 0
+
+                        showPaymentModal(resID, totalAmount);
 
                         // reset hidden inputs
                         $("#roomID").val('');
@@ -148,6 +146,8 @@ $(function() {
                         $("#discountDisplay").text('');
                         $("#pricePerNightDisplay").text('');
                         $("#totalDisplay").text('');
+                    } else {
+                        alert(d.hint);
                     }
                 }
             });
@@ -165,6 +165,36 @@ $(function() {
     $(document).on("click", ".closeConfirmBtn", function(){
         $("#confirmModal").hide();
     });
+
+    $("#burgerBtn").click(function(e){
+        e.stopPropagation();
+        $("#burgerMenu").toggle();
+    });
+
+    // closes when clicking anywhere else
+    $(document).click(function(){
+        $("#burgerMenu").hide();
+    });
+
+    $.ajax({
+        url:"../../controller/checkSession.php",
+        type:"GET",
+        dataType:"JSON",
+        success:function(data){
+            if(data.loggedIN) {
+                $("#loginBtn").hide();
+                $("#burgerBtn").show(); // ✅ show when logged in
+                $("#navUsername").text("WELCOME, Mr. " + data.firstName);
+            } else {
+                $("#burgerBtn").hide(); // ✅ hide when not logged in
+                $("#loginBtn").show();  // make sure login shows
+            }
+        }
+    });
+});
+
+$("#burgerBtn").click(function(){
+    $(".sidebar").toggleClass("open");
 });
 
 function loadRooms(checkIN, checkOUT, guests, numAdults, numChildren, hasPet, discountID) {
@@ -236,3 +266,60 @@ $(document).on("click", ".bookNowBtn", function(){
 
     openSummary(roomID, checkIN, checkOUT, numAdults, numChildren, hasPet, discountID);
 });
+
+function showPaymentModal(resID, totalAmount) {
+    $("#paymentResID").val(resID);
+    $("#paymentAmount").text("₱" + totalAmount);
+    $("#payMethod").val("CASH");
+    $("#cardDetailsForm").hide();
+    $("#cardNumber, #cardName, #cardExpiry, #cardCVV").val('');
+    $("#paymentModal").css("display", "flex");
+}
+
+$(document).on("click", "#paymentModal .close", function() {
+    $("#paymentModal").fadeOut(150);
+});
+
+$(document).on("change", "#payMethod", function() {
+    if($(this).val() == "CARD") {
+        $("#cardDetailsForm").slideDown(200);
+    } else {
+        $("#cardDetailsForm").slideUp(200);
+    }
+});     
+
+$(document).on("click", "#confirmPaymentBtn", function() {
+    let resID = $("#paymentResID").val();
+    let payMethod = $("#payMethod").val();
+
+    if(payMethod == "CARD") {
+        let cardNumber = $("#cardNumber").val().trim();
+        let cardName = $("#cardName").val().trim();
+
+        if(cardNumber == '' || cardName == '') {
+            alert("Please fill in all card details");
+            return;
+        }
+    }
+
+    $.ajax({
+        url:"../../controller/booking.php",
+        type:"POST",
+        data:{
+            action:"confirmPayment",
+            resID:resID,
+            payMethod:payMethod
+        },
+        success:function(data) {
+            let d = JSON.parse(data);
+
+            if(d.success) {
+                $("#paymentModal").fadeOut(150);
+                $("#confirmModal").css("display", "flex");
+            } else {
+                alert(d.hint);
+            }
+        }
+    });
+});
+

@@ -40,6 +40,7 @@ $(function(){
         $("#forgotPass").submit(function(e){
             e.preventDefault();
 
+            let email = $("#email").val();
             let oldPassword = $("#oldPassword").val();
             let newPassword = $("#newPassword").val();
             let confirmNewPassword = $("#confirmNewPassword").val();
@@ -50,6 +51,7 @@ $(function(){
                 dataType:"JSON",
                 data:{
                     action:"forgotPass",
+                    email:email,
                     oldPassword:oldPassword,
                     newPassword:newPassword,
                     confirmNewPassword:confirmNewPassword

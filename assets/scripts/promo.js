@@ -26,7 +26,7 @@ function loadPromotions() {
             $("#promotions").empty(); 
 
             if(p.length == 0) {
-                $("#emptyTable").html('<p>No Promotions Found</p>');
+                $("#promotions").append('<tr><td colspan="7">NO DATA AVAILABLE</td></tr>');
                 return;
             }
 

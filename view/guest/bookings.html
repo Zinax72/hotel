@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <link rel="stylesheet" href="../../assets/styles/settings.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2 id="userName"></h2>
+        
+        <a href="settings.html" class="menu-item">Settings</a>
+        <a href="bookings.html" class="menu-item">Bookings History</a>
+        <div class="sidebar-bottom">
+            <a href="home.html" id="return" class="menu-item return">RETURN</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="table-header">
+            <h2 id="tableName">Booking History</h2>
+        </div>
+        <table id="reservationsTable">
+            <thead>
+                <tr>
+                    <th>Res ID</th>
+                    <th>Guest</th>
+                    <th>Room</th>
+                    <th>Type</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Guests</th>
+                    <th>Pet</th>
+                    <th>Discount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="reservations"></tbody>
+        </table>
+        <div id="emptyTable"></div>
+    </div>
+
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="../../assets/scripts/bookingsHistory.js"></script>
+</body>
+</html>

@@ -3,7 +3,16 @@ session_start();
 include "../db.php";
 include "../model/promo.php";
 
-$conn = getConnection($_SESSION['role'] ?? 'GUEST');
+if(!isset($_SESSION['userID']) || 
+   !in_array($_SESSION['role'], ['MANAGER', 'ADMIN'])) {
+    echo json_encode([
+        "success" => false,
+        "hint" => "Unauthorized"
+    ]);
+    exit();
+}
+
+$conn = getConnection($_SESSION['role']);
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
 switch($action) {

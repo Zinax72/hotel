@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="../../assets/styles/staff.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Hotel Management</h2>
+        
+        <a href="dashboard.html" class="managerOnly">Dashboard</a>
+        <a href="reservations.html" class="menu-item">Reservations</a>
+        <a href="rooms.html" class="menu-item">Rooms</a>
+        <a href="promotions.html" class="managerOnly">Promotions</a>
+        <a href="payments.html" class="managerOnly">Payment Records</a>
+        <a href="user.html" class="adminOnly">Manage Users</a>
+        
+        <div class="sidebar-bottom">
+            <a href="#" id="logoutBtn" class="menu-item logout">LOGOUT</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="table-header">
+            <h2 id="tableName">PAYMENT RECORDS</h2>
+        </div>
+        <table id="paymentsTable">
+            <thead>
+                <tr>
+                    <th>Payment ID</th>
+                    <th>Reservation ID</th>
+                    <th>Amount</th>
+                    <th>Payment Method</th>
+                    <th>Status</th> 
+                </tr>
+            </thead>
+            <tbody id="payments"></tbody>
+        </table>
+        <div id="emptyTable"></div>
+    </div>
+
+    <script src="../../assets/scripts/jq.js"></script>
+    <script src="../../assets/scripts/payment.js"></script>
+</body>
+</html>
